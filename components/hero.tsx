@@ -37,10 +37,8 @@ export default function Hero() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.8 }}
         >
-          <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
-            <Phone className="h-4 w-4" />
-            <span>8352977033</span>
-          </div>
+          
+          
           <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
             <Mail className="h-4 w-4" />
             <span>piyushmodgil9@gmail.com</span>

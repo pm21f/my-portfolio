@@ -145,10 +145,7 @@ export default function Contact() {
                 <CardDescription>Feel free to reach out through any of these channels.</CardDescription>
               </CardHeader>
               <CardContent className="space-y-4">
-                <div className="flex items-center gap-3">
-                  <Phone className="h-5 w-5 text-sky-600 dark:text-sky-400" />
-                  <span className="text-gray-700 dark:text-gray-300"></span>
-                </div>
+                  
                 <div className="flex items-center gap-3">
                   <Mail className="h-5 w-5 text-sky-600 dark:text-sky-400" />
                   <span className="text-gray-700 dark:text-gray-300">piyushmodgil9@gmail.com</span>
