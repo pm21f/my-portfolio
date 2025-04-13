@@ -1,7 +1,7 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Github, Linkedin, Instagram, Mail, Phone, MapPin } from "lucide-react"
+import { Github, Linkedin, Instagram, Mail, MapPin } from "lucide-react" // Removed Phone icon
 import { Button } from "@/components/ui/button"
 
 export default function Hero() {
@@ -37,8 +37,6 @@ export default function Hero() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.6, duration: 0.8 }}
         >
-          
-          
           <div className="flex items-center gap-2 text-gray-700 dark:text-gray-300">
             <Mail className="h-4 w-4" />
             <span>piyushmodgil9@gmail.com</span>

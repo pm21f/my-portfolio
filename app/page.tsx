@@ -3,6 +3,7 @@ import About from "@/components/about"
 import Experience from "@/components/experience"
 import Skills from "@/components/skills"
 import Projects from "@/components/projects"
+import Achievements from "@/components/achievements" // Import the new component
 import Contact from "@/components/contact"
 import FloatingClouds from "@/components/floating-clouds"
 
@@ -16,6 +17,7 @@ export default function Home() {
         <Experience />
         <Skills />
         <Projects />
+        <Achievements /> {/* Add the new section */}
         <Contact />
       </div>
     </main>
