@@ -28,7 +28,7 @@ export default function Hero() {
           animate={{ opacity: 1 }}
           transition={{ delay: 0.4, duration: 0.8 }}
         >
-          Developer & Tech Enthusiast
+          CTO & Cofounder of Esprit System | Developer & Tech Enthusiast
         </motion.p>
 
         <motion.div
