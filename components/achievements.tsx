@@ -3,18 +3,7 @@
 import { useState, useRef, Suspense, useEffect } from "react"
 import { motion } from "framer-motion"
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
-import {
-  Float,
-  PresentationControls,
-  Environment,
-  useTexture,
-  Html,
-  Stars,
-  Cloud,
-  Text3D,
-  Sparkles,
-  OrbitControls,
-} from "@react-three/drei"
+import { Float, PresentationControls, Environment, Html, Text, OrbitControls } from "@react-three/drei"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Badge } from "@/components/ui/badge"
@@ -199,57 +188,43 @@ const certifications = [
   },
 ]
 
-// Enhanced 3D Certificate Component
-function Certificate3D({ position, rotation, title, organization, onClick, isMain }: any) {
+// Simplified 3D Certificate Component
+function Certificate3D({ position, title, organization, onClick, isMain }: any) {
   const meshRef = useRef<THREE.Mesh>(null)
-  const texture = useTexture("/placeholder.svg?height=512&width=512")
   const [hovered, setHovered] = useState(false)
 
-  useFrame((state) => {
+  useFrame(() => {
     if (meshRef.current) {
-      meshRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.3) * 0.02
-      meshRef.current.rotation.y = Math.sin(state.clock.elapsedTime * 0.2) * 0.02
-
-      // Add pulse effect for main certificates
-      if (isMain) {
-        meshRef.current.scale.x = 1.2 + Math.sin(state.clock.elapsedTime * 2) * 0.05
-        meshRef.current.scale.y = 1.2 + Math.sin(state.clock.elapsedTime * 2) * 0.05
-        meshRef.current.scale.z = 1.2 + Math.sin(state.clock.elapsedTime * 2) * 0.05
-      }
+      meshRef.current.rotation.y += 0.01
     }
   })
 
   return (
-    <Float speed={2} rotationIntensity={0.4} floatIntensity={0.5}>
+    <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.3}>
       <group
         position={position}
-        rotation={rotation}
         onClick={onClick}
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
       >
         <mesh ref={meshRef} receiveShadow castShadow>
-          <planeGeometry args={[3, 2]} />
+          <boxGeometry args={[2, 1.5, 0.1]} />
           <meshStandardMaterial
-            map={texture}
-            emissive={isMain ? "#ffcc00" : "#ffffff"}
-            emissiveIntensity={hovered ? 0.5 : isMain ? 0.3 : 0.1}
+            color={isMain ? "#4299e1" : "#8b5cf6"}
             metalness={0.5}
             roughness={0.2}
+            emissive={hovered ? "#ffffff" : "#000000"}
+            emissiveIntensity={hovered ? 0.2 : 0}
           />
         </mesh>
-        {isMain && <Sparkles count={20} scale={3} size={0.4} speed={0.3} color="#ffcc00" />}
-        <Html position={[0, -1.3, 0]} transform occlude>
+        <Html position={[0, 0, 0.06]} transform>
           <div
-            className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-2 rounded-lg shadow-lg text-center w-[200px] ${isMain ? "border-2 border-yellow-400" : ""}`}
+            className={`bg-white/90 dark:bg-gray-800/90 p-2 rounded-lg shadow-lg text-center w-[180px] ${
+              isMain ? "border-2 border-blue-400" : ""
+            }`}
           >
-            <h3 className="font-bold text-sm">{title}</h3>
+            <h3 className="font-bold text-xs">{title}</h3>
             <p className="text-xs text-gray-600 dark:text-gray-300">{organization}</p>
-            {isMain && (
-              <span className="inline-flex items-center text-xs text-yellow-600 dark:text-yellow-400 mt-1">
-                <Star className="h-3 w-3 mr-1" /> Featured
-              </span>
-            )}
           </div>
         </Html>
       </group>
@@ -257,90 +232,40 @@ function Certificate3D({ position, rotation, title, organization, onClick, isMai
   )
 }
 
-// Enhanced 3D Trophy Component
-function Trophy3D({ position, rotation, title, onClick, isMain }: any) {
-  const meshRef = useRef<THREE.Group>(null)
+// Simplified 3D Trophy Component
+function Trophy3D({ position, title, onClick, isMain }: any) {
+  const meshRef = useRef<THREE.Mesh>(null)
   const [hovered, setHovered] = useState(false)
 
-  useFrame((state) => {
+  useFrame(() => {
     if (meshRef.current) {
       meshRef.current.rotation.y += 0.01
-
-      // Add special effects for main achievements
-      if (isMain) {
-        meshRef.current.scale.x = 1.2 + Math.sin(state.clock.elapsedTime) * 0.05
-        meshRef.current.scale.y = 1.2 + Math.sin(state.clock.elapsedTime) * 0.05
-        meshRef.current.scale.z = 1.2 + Math.sin(state.clock.elapsedTime) * 0.05
-      }
     }
   })
 
   return (
-    <Float speed={2} rotationIntensity={0.5} floatIntensity={0.5}>
+    <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.3}>
       <group
         position={position}
-        rotation={rotation}
         onClick={onClick}
         onPointerOver={() => setHovered(true)}
         onPointerOut={() => setHovered(false)}
       >
-        <group ref={meshRef}>
-          {/* Trophy base */}
-          <mesh receiveShadow castShadow>
-            <cylinderGeometry args={[0.5, 0.7, 0.2, 32]} />
-            <meshStandardMaterial
-              color={isMain ? "#FFD700" : "#D4AF37"}
-              metalness={0.8}
-              roughness={0.2}
-              emissive={isMain ? "#FFD700" : "#000000"}
-              emissiveIntensity={hovered ? 0.3 : isMain ? 0.2 : 0}
-            />
-          </mesh>
-
-          {/* Trophy stem */}
-          <mesh position={[0, 0.6, 0]} receiveShadow castShadow>
-            <cylinderGeometry args={[0.1, 0.1, 1, 16]} />
-            <meshStandardMaterial color="#C0C0C0" metalness={0.6} roughness={0.3} />
-          </mesh>
-
-          {/* Trophy cup */}
-          <mesh position={[0, 1.2, 0]} receiveShadow castShadow>
-            <sphereGeometry args={[0.3, 16, 16]} />
-            <meshStandardMaterial
-              color={isMain ? "#FFD700" : "#D4AF37"}
-              metalness={0.8}
-              roughness={0.2}
-              emissive={isMain ? "#FFD700" : "#000000"}
-              emissiveIntensity={hovered ? 0.3 : isMain ? 0.2 : 0}
-            />
-          </mesh>
-
-          {/* Add decorative elements for main trophy */}
-          {isMain && (
-            <>
-              <group position={[0, 1.6, 0]}>
-                {/* Create a star shape using multiple cones arranged in a circle */}
-                {[0, 1, 2, 3, 4].map((i) => (
-                  <mesh key={i} position={[0, 0, 0]} rotation={[0, 0, (i * Math.PI * 2) / 5]} receiveShadow castShadow>
-                    <coneGeometry args={[0.1, 0.4, 3]} />
-                    <meshStandardMaterial
-                      color="#FFD700"
-                      metalness={0.9}
-                      roughness={0.1}
-                      emissive="#FFD700"
-                      emissiveIntensity={0.5}
-                    />
-                  </mesh>
-                ))}
-              </group>
-              <Sparkles count={30} scale={2} size={0.3} speed={0.5} color="#FFD700" />
-            </>
-          )}
-        </group>
-
-        <Html position={[0, -0.5, 0]} transform occlude>
+        <mesh ref={meshRef} receiveShadow castShadow>
+          <cylinderGeometry args={[0.5, 0.5, 1, 16]} />
+          <meshStandardMaterial
+            color={isMain ? "#FFD700" : "#D4AF37"}
+            metalness={0.7}
+            roughness={0.2}
+            emissive={hovered ? "#ffffff" : "#000000"}
+            emissiveIntensity={hovered ? 0.2 : 0}
+          />
+        </mesh>
+        <Html position={[0, 0, 0]} transform>
           <div
-            className={`bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm p-2 rounded-lg shadow-lg text-center w-[150px] ${isMain ? "border-2 border-yellow-400" : ""}`}
+            className={`bg-white/90 dark:bg-gray-800/90 p-2 rounded-lg shadow-lg text-center w-[150px] ${
+              isMain ? "border-2 border-yellow-400" : ""
+            }`}
           >
             <h3 className="font-bold text-xs">{title}</h3>
             {isMain && (
@@ -355,35 +280,26 @@ function Trophy3D({ position, rotation, title, onClick, isMain }: any) {
   )
 }
 
-// 3D Title Component
-function Title3D({ text, position = [0, 0, 0] }: { text: string; position?: [number, number, number] }) {
-  const { viewport } = useThree()
-  const isMobile = viewport.width < 4
-
+// Simplified 3D Title Component
+function Title3D({ text, position = [0, 0, 0] }) {
   return (
-    <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.3}>
-      <Text3D
+    <Float speed={1} rotationIntensity={0.1} floatIntensity={0.1}>
+      <Text
         position={position}
-        font="/fonts/Geist_Bold.json"
-        size={isMobile ? 0.5 : 0.8}
-        height={0.1}
-        curveSegments={12}
+        fontSize={1}
+        color="#4299e1"
+        anchorX="center"
+        anchorY="middle"
+        font="/fonts/Geist-Bold.ttf"
       >
         {text}
-        <meshStandardMaterial
-          color="#4299e1"
-          emissive="#4299e1"
-          emissiveIntensity={0.5}
-          metalness={0.8}
-          roughness={0.2}
-        />
-      </Text3D>
-      <Sparkles count={20} scale={6} size={0.4} speed={0.3} color="#4299e1" />
+        <meshStandardMaterial color="#4299e1" emissive="#4299e1" emissiveIntensity={0.5} />
+      </Text>
     </Float>
   )
 }
 
-// Enhanced 3D Scene for Achievements
+// Simplified 3D Scene for Achievements
 function AchievementsScene({ onSelect }: { onSelect: (id: number) => void }) {
   const { viewport } = useThree()
   const isMobile = viewport.width < 4
@@ -392,15 +308,13 @@ function AchievementsScene({ onSelect }: { onSelect: (id: number) => void }) {
   const getPositions = () => {
     if (isMobile) {
       // Stack vertically on mobile
-      return achievements.map((_, i) => [0, -i * 2.5, 0])
+      return achievements.slice(0, 5).map((_, i) => [0, -i * 2, 0])
     } else {
       // Arrange in a circular pattern
-      const radius = 6
-      return achievements.map((_, i) => [
-        radius * Math.cos(i * ((2 * Math.PI) / achievements.length)),
-        0,
-        radius * Math.sin(i * ((2 * Math.PI) / achievements.length)),
-      ])
+      const radius = 4
+      return achievements
+        .slice(0, 5)
+        .map((_, i) => [radius * Math.cos(i * ((2 * Math.PI) / 5)), 0, radius * Math.sin(i * ((2 * Math.PI) / 5))])
     }
   }
 
@@ -408,9 +322,8 @@ function AchievementsScene({ onSelect }: { onSelect: (id: number) => void }) {
 
   return (
     <>
-      <ambientLight intensity={0.5} />
-      <pointLight position={[10, 10, 10]} intensity={0.8} />
-      <spotLight position={[0, 10, 0]} intensity={0.5} castShadow />
+      <ambientLight intensity={0.7} />
+      <pointLight position={[10, 10, 10]} intensity={0.5} />
 
       <Title3D text="Achievements" position={[0, isMobile ? 3 : 4, 0]} />
 
@@ -421,11 +334,10 @@ function AchievementsScene({ onSelect }: { onSelect: (id: number) => void }) {
         polar={[-Math.PI / 4, Math.PI / 4]}
         azimuth={[-Math.PI / 4, Math.PI / 4]}
       >
-        {achievements.map((achievement, index) => (
+        {achievements.slice(0, 5).map((achievement, index) => (
           <Trophy3D
             key={achievement.id}
             position={positions[index]}
-            rotation={[0, 0, 0]}
             title={achievement.title}
             onClick={() => onSelect(achievement.id)}
             isMain={achievement.isMain}
@@ -433,14 +345,12 @@ function AchievementsScene({ onSelect }: { onSelect: (id: number) => void }) {
         ))}
       </PresentationControls>
 
-      <Cloud position={[0, -3, 0]} opacity={0.5} speed={0.4} width={10} depth={1.5} />
-      <Stars radius={50} depth={50} count={1000} factor={4} saturation={0} fade speed={1} />
       <Environment preset="city" />
     </>
   )
 }
 
-// Enhanced 3D Scene for Certifications
+// Simplified 3D Scene for Certifications
 function CertificationsScene({ onSelect }: { onSelect: (id: number) => void }) {
   const { viewport } = useThree()
   const isMobile = viewport.width < 4
@@ -449,12 +359,11 @@ function CertificationsScene({ onSelect }: { onSelect: (id: number) => void }) {
   const getPositions = () => {
     if (isMobile) {
       // Stack vertically on mobile
-      return certifications.map((_, i) => [0, -i * 2.5, 0])
+      return certifications.slice(0, 5).map((_, i) => [0, -i * 2, 0])
     } else {
       // Arrange in a grid pattern
       const cols = 3
-      const rows = Math.ceil(certifications.length / cols)
-      return certifications.map((_, i) => [((i % cols) - 1) * 4, Math.floor(i / cols) * -3 + rows, 0])
+      return certifications.slice(0, 5).map((_, i) => [((i % cols) - 1) * 3, Math.floor(i / cols) * -2.5, 0])
     }
   }
 
@@ -462,9 +371,8 @@ function CertificationsScene({ onSelect }: { onSelect: (id: number) => void }) {
 
   return (
     <>
-      <ambientLight intensity={0.5} />
-      <pointLight position={[10, 10, 10]} intensity={0.8} />
-      <spotLight position={[0, 10, 0]} intensity={0.5} castShadow />
+      <ambientLight intensity={0.7} />
+      <pointLight position={[10, 10, 10]} intensity={0.5} />
 
       <Title3D text="Certifications" position={[0, isMobile ? 3 : 4, 0]} />
 
@@ -475,11 +383,10 @@ function CertificationsScene({ onSelect }: { onSelect: (id: number) => void }) {
         polar={[-Math.PI / 4, Math.PI / 4]}
         azimuth={[-Math.PI / 4, Math.PI / 4]}
       >
-        {certifications.map((cert, index) => (
+        {certifications.slice(0, 5).map((cert, index) => (
           <Certificate3D
             key={cert.id}
             position={positions[index]}
-            rotation={[0, 0, 0]}
             title={cert.title}
             organization={cert.organization}
             onClick={() => onSelect(cert.id)}
@@ -488,8 +395,6 @@ function CertificationsScene({ onSelect }: { onSelect: (id: number) => void }) {
         ))}
       </PresentationControls>
 
-      <Cloud position={[0, -3, 0]} opacity={0.5} speed={0.4} width={10} depth={1.5} />
-      <Stars radius={50} depth={50} count={1000} factor={4} saturation={0} fade speed={1} />
       <Environment preset="sunset" />
     </>
   )
@@ -498,15 +403,15 @@ function CertificationsScene({ onSelect }: { onSelect: (id: number) => void }) {
 export default function Achievements() {
   const [selectedAchievement, setSelectedAchievement] = useState<number | null>(null)
   const [selectedCertification, setSelectedCertification] = useState<number | null>(null)
-  const [canvasHeight, setCanvasHeight] = useState("600px")
+  const [canvasHeight, setCanvasHeight] = useState("500px")
 
   // Adjust canvas height based on screen size
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 768) {
-        setCanvasHeight("400px")
+        setCanvasHeight("350px")
       } else {
-        setCanvasHeight("600px")
+        setCanvasHeight("500px")
       }
     }
 
@@ -551,7 +456,7 @@ export default function Achievements() {
               <Suspense
                 fallback={<div className="flex h-full items-center justify-center">Loading 3D Achievements...</div>}
               >
-                <Canvas camera={{ position: [0, 0, 15], fov: 50 }} shadows>
+                <Canvas camera={{ position: [0, 0, 10], fov: 50 }}>
                   <AchievementsScene onSelect={setSelectedAchievement} />
                   <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
                 </Canvas>
@@ -559,7 +464,7 @@ export default function Achievements() {
             </div>
 
             <div className="text-center mb-8 text-gray-600 dark:text-gray-300">
-              <p>Click on a trophy to view achievement details</p>
+              <p>Click on a trophy to view achievement details (showing 5 of 10)</p>
             </div>
 
             {selectedAchievement && (
@@ -679,7 +584,7 @@ export default function Achievements() {
               <Suspense
                 fallback={<div className="flex h-full items-center justify-center">Loading 3D Certifications...</div>}
               >
-                <Canvas camera={{ position: [0, 0, 15], fov: 50 }} shadows>
+                <Canvas camera={{ position: [0, 0, 10], fov: 50 }}>
                   <CertificationsScene onSelect={setSelectedCertification} />
                   <OrbitControls enableZoom={false} autoRotate autoRotateSpeed={0.5} />
                 </Canvas>
@@ -687,7 +592,7 @@ export default function Achievements() {
             </div>
 
             <div className="text-center mb-8 text-gray-600 dark:text-gray-300">
-              <p>Click on a certificate to view details</p>
+              <p>Click on a certificate to view details (showing 5 of 10)</p>
             </div>
 
             {selectedCertification && (
