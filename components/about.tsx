@@ -27,7 +27,7 @@ export default function About() {
               <CardContent className="p-6">
                 <h3 className="mb-4 text-xl font-semibold text-gray-800 dark:text-white">Who I Am</h3>
                 <p className="text-gray-600 dark:text-gray-300">
-                  Student of class btech 4th year student with a strong foundation in computer science and a passion
+                 Am Student of class btech 4th year student with a strong foundation in computer science and a passion
                   for building scalable, efficient cloud applications. I lead technical strategy and architecture
                   decisions while continuously learning new technologies to enhance our product offerings and team
                   capabilities.
