@@ -1,4 +1,3 @@
-
 "use client"
 
 import { useState, useEffect } from "react"
@@ -13,8 +12,12 @@ const navItems = [
   { name: "Experience", href: "#experience" },
   { name: "Skills", href: "#skills" },
   { name: "Projects", href: "#projects" },
-  { name: "Achievements", href: "#achievements" }, // Added new navigation item
-  { name: "Resume", href: "https://drive.google.com/file/d/1iWEas--kKEW6EL3U2KXrX0Stac2kLUVg/view?usp=sharing", external: true },
+  { name: "Achievements", href: "#achievements" },
+  {
+    name: "Resume",
+    href: "https://docs.google.com/document/d/1545j_wmPT3haYTkodSCo9D1whmn2WOkЗ/view?usp=sharing",
+    external: true,
+  },
   { name: "Contact", href: "#contact" },
 ]
 
@@ -26,9 +29,7 @@ export default function Navbar() {
 
   useEffect(() => {
     setMounted(true)
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 50)
-    }
+    const handleScroll = () => setScrolled(window.scrollY > 50)
     window.addEventListener("scroll", handleScroll)
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
@@ -53,16 +54,31 @@ export default function Navbar() {
       <div className="container mx-auto flex h-16 items-center justify-between px-4">
         <div className="text-xl font-bold text-sky-600 dark:text-sky-400">Piyush Modgil</div>
 
+        {/* DESKTOP MENU */}
         <div className="hidden md:flex items-center space-x-6">
-          {navItems.map((item) => (
-            <button
-              key={item.name}
-              onClick={() => scrollToSection(item.href)}
-              className="text-gray-700 hover:text-sky-600 dark:text-gray-300 dark:hover:text-sky-400 transition-colors"
-            >
-              {item.name}
-            </button>
-          ))}
+          {navItems.map((item) =>
+            item.external ? (
+              <a
+                key={item.name}
+                href={item.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-gray-700 hover:text-sky-600 dark:text-gray-300 dark:hover:text-sky-400 transition-colors"
+              >
+                {item.name}
+              </a>
+            ) : (
+              <button
+                key={item.name}
+                onClick={() => scrollToSection(item.href)}
+                className="text-gray-700 hover:text-sky-600 dark:text-gray-300 dark:hover:text-sky-400 transition-colors"
+              >
+                {item.name}
+              </button>
+            )
+          )}
+
+          {/* Theme Toggle */}
           <Button
             variant="ghost"
             size="icon"
@@ -73,7 +89,7 @@ export default function Navbar() {
           </Button>
         </div>
 
-        {/* Mobile menu button */}
+        {/* MOBILE MENU BUTTON */}
         <div className="md:hidden flex items-center gap-2">
           <Button
             variant="ghost"
@@ -83,25 +99,39 @@ export default function Navbar() {
           >
             {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
           </Button>
-          <Button variant="outline" onClick={() => setMobileMenuOpen(!mobileMenuOpen)} className="md:hidden">
+
+          <Button variant="outline" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
             Menu
           </Button>
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* MOBILE MENU */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-white/90 dark:bg-gray-900/90 backdrop-blur-md p-4 shadow-lg">
           <div className="flex flex-col space-y-3">
-            {navItems.map((item) => (
-              <button
-                key={item.name}
-                onClick={() => scrollToSection(item.href)}
-                className="text-gray-700 hover:text-sky-600 dark:text-gray-300 dark:hover:text-sky-400 transition-colors py-2"
-              >
-                {item.name}
-              </button>
-            ))}
+            {navItems.map((item) =>
+              item.external ? (
+                <a
+                  key={item.name}
+                  href={item.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-gray-700 hover:text-sky-600 dark:text-gray-300 dark:hover:text-sky-400 transition-colors py-2"
+                  onClick={() => setMobileMenuOpen(false)}
+                >
+                  {item.name}
+                </a>
+              ) : (
+                <button
+                  key={item.name}
+                  onClick={() => scrollToSection(item.href)}
+                  className="text-gray-700 hover:text-sky-600 dark:text-gray-300 dark:hover:text-sky-400 transition-colors py-2"
+                >
+                  {item.name}
+                </button>
+              )
+            )}
           </div>
         </div>
       )}
