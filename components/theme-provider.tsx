@@ -7,14 +7,15 @@ import type { ThemeProviderProps } from "next-themes"
 export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   const [mounted, setMounted] = React.useState(false)
 
-  // Ensure theme is only applied after mounting to prevent hydration mismatch
   React.useEffect(() => {
     setMounted(true)
   }, [])
 
   if (!mounted) {
-    return <>{children}</>
+    // Return a dark background placeholder to prevent a flash of white
+    return <div className="min-h-screen bg-[#040814] text-slate-300" /> 
   }
 
+  // We recommend passing defaultTheme="dark" and attribute="class" from your layout.tsx
   return <NextThemesProvider {...props}>{children}</NextThemesProvider>
 }

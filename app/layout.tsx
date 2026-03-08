@@ -2,12 +2,18 @@ import type React from "react"
 import "@/app/globals.css"
 import { ThemeProvider } from "@/components/theme-provider"
 import Navbar from "@/components/navbar"
+import { Inter } from "next/font/google" // No npm install required!
 import type { Metadata } from "next"
 
+// This loads Inter directly from Google's CDN via Next.js
+const inter = Inter({ 
+  subsets: ["latin"],
+  display: 'swap',
+})
+
 export const metadata: Metadata = {
-  title: "Piyush Modgil | Portfolio",
-  description: "Personal portfolio website of Piyush Modgil - Developer & Tech Enthusiast",
-    generator: 'v0.dev'
+  title: "Piyush Modgil | Cloud Engineer",
+  description: "Cloud Infrastructure & Backend Developer",
 }
 
 export default function RootLayout({
@@ -17,12 +23,8 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head>
-        {/* Add preconnect for performance */}
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      </head>
-      <body className="min-h-screen bg-background font-serif antialiased">
-        <ThemeProvider attribute="class" defaultTheme="light" enableSystem>
+      <body className={`${inter.className} min-h-screen bg-background antialiased text-slate-900 dark:text-slate-50`}>
+        <ThemeProvider attribute="class" defaultTheme="dark" enableSystem>
           <Navbar />
           {children}
         </ThemeProvider>
@@ -30,6 +32,3 @@ export default function RootLayout({
     </html>
   )
 }
-
-
-import './globals.css'

@@ -1,150 +1,127 @@
 "use client"
 
-import { useState } from "react"
 import { motion } from "framer-motion"
-import { Suspense, useRef } from "react"
-import { Canvas, useFrame } from "@react-three/fiber"
-import { OrbitControls, Environment, Text, Float, Sparkles } from "@react-three/drei"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import type * as THREE from "three"
+import { Activity, Server, Database, Globe, Cpu, Terminal } from "lucide-react"
 
 const projects = [
   {
-    title: "Bug Finder",
-    description: "Secure backend with Spring Data JPA, user authentication, and API testing",
-    details:
-      "A comprehensive bug tracking system built with Spring Boot that allows teams to track, manage, and resolve software bugs efficiently.",
+    id: "i-09a8b7c6d5e4f32",
+    name: "Vigilance AI",
+    type: "Serverless Engine",
+    status: "HEALTHY",
+    region: "us-east-1",
+    description: "A serverless market perception engine architected with AWS and provisioned entirely via Terraform.",
+    tech: ["AWS", "Terraform", "Serverless"],
+    metrics: { uptime: "99.99%", latency: "42ms" },
+    icon: <Globe className="w-5 h-5 text-[var(--aws-amber)]" />
   },
   {
-    title: "AI Resume Scanner",
-    description: "RESTful Spring backend, scalable microservices",
-    details:
-      "An intelligent resume parsing and analysis tool that uses AI to extract key information from resumes and match candidates to job requirements.",
+    id: "i-0a1b2c3d4e5f678",
+    name: "Real-Time Comm Engine",
+    type: "WebSocket Backend",
+    status: "HEALTHY",
+    region: "ap-south-1",
+    description: "High-concurrency backend infrastructure for a WhatsApp clone, managing real-time messaging and state.",
+    tech: ["Golang", "PostgreSQL", "WebSockets"],
+    metrics: { uptime: "99.95%", latency: "12ms" },
+    icon: <Activity className="w-5 h-5 text-[var(--go-cyan)]" />
   },
   {
-    title: "Learning Zone",
-    description: "DevOps + Cybersecurity platform",
-    details:
-      "An interactive learning platform focused on DevOps and Cybersecurity with hands-on labs, tutorials, and assessments.",
+    id: "i-0f9e8d7c6b5a432",
+    name: "Restaurant Core API",
+    type: "Monolith Service",
+    status: "HEALTHY",
+    region: "eu-central-1",
+    description: "Robust backend ordering platform managing transactions, menu states, and delivery routing.",
+    tech: ["Django", "Python", "REST API"],
+    metrics: { uptime: "99.9%", latency: "85ms" },
+    icon: <Database className="w-5 h-5 text-[var(--tf-purple)]" />
   },
+  {
+    id: "i-0123456789abcde",
+    name: "IoT Edge Node (VECTOR)",
+    type: "Hardware Prototype",
+    status: "ONLINE",
+    region: "edge-device",
+    description: "Wi-Fi controlled autonomous robotics platform utilizing ESP32 microcontrollers and ultrasonic sensors.",
+    tech: ["ESP32", "C++", "Hardware"],
+    metrics: { uptime: "98.5%", latency: "5ms" },
+    icon: <Cpu className="w-5 h-5 text-green-500" />
+  }
 ]
 
-function ProjectSphere({
-  position,
-  title,
-  onClick,
-}: { position: [number, number, number]; title: string; onClick: () => void }) {
-  const meshRef = useRef<THREE.Mesh>(null)
-  const [hovered, setHovered] = useState(false)
-
-  useFrame((state) => {
-    if (meshRef.current) {
-      meshRef.current.rotation.y += 0.005
-      meshRef.current.position.y = position[1] + Math.sin(state.clock.elapsedTime) * 0.1
-
-      // Add pulse effect when hovered
-      if (hovered) {
-        meshRef.current.scale.x = 1 + Math.sin(state.clock.elapsedTime * 2) * 0.05
-        meshRef.current.scale.y = 1 + Math.sin(state.clock.elapsedTime * 2) * 0.05
-        meshRef.current.scale.z = 1 + Math.sin(state.clock.elapsedTime * 2) * 0.05
-      }
-    }
-  })
-
-  return (
-    <Float speed={1.5} rotationIntensity={0.2} floatIntensity={0.5}>
-      <group
-        position={position}
-        onClick={onClick}
-        onPointerOver={() => setHovered(true)}
-        onPointerOut={() => setHovered(false)}
-      >
-        <mesh ref={meshRef}>
-          <sphereGeometry args={[1, 32, 32]} />
-          <meshStandardMaterial
-            color={hovered ? "#a855f7" : "#8b5cf6"}
-            emissive={hovered ? "#7c3aed" : "#4c1d95"}
-            emissiveIntensity={hovered ? 1 : 0.5}
-            roughness={0.2}
-            metalness={0.8}
-          />
-        </mesh>
-        {hovered && <Sparkles count={50} scale={3} size={0.4} speed={0.3} color="#f0f8ff" />}
-        <Text
-          position={[0, -1.5, 0]}
-          fontSize={0.3}
-          color="#ffffff"
-          anchorX="center"
-          anchorY="middle"
-          maxWidth={2}
-          textAlign="center"
-        >
-          {title}
-        </Text>
-      </group>
-    </Float>
-  )
-}
-
-function ProjectsScene({ onProjectClick }: { onProjectClick: (index: number) => void }) {
-  return (
-    <>
-      <ambientLight intensity={0.5} />
-      <ProjectSphere position={[-2.5, 0, 0]} title={projects[0].title} onClick={() => onProjectClick(0)} />
-      <ProjectSphere position={[0, 0, 0]} title={projects[1].title} onClick={() => onProjectClick(1)} />
-      <ProjectSphere position={[2.5, 0, 0]} title={projects[2].title} onClick={() => onProjectClick(2)} />
-      <Sparkles count={100} scale={10} size={0.6} speed={0.3} color="#f0f8ff" />
-      <Environment preset="city" />
-      <OrbitControls enableZoom={false} enablePan={false} />
-    </>
-  )
-}
-
 export default function Projects() {
-  const [selectedProject, setSelectedProject] = useState<number | null>(null)
-
   return (
-    <section id="projects" className="py-20">
-      <motion.div
-        initial={{ opacity: 0 }}
-        whileInView={{ opacity: 1 }}
-        transition={{ duration: 0.8 }}
-        viewport={{ once: true }}
-        className="container mx-auto"
-      >
-        <h2 className="mb-12 text-center text-3xl font-bold text-gray-800 dark:text-white md:text-4xl">Projects</h2>
-
-        <div className="mb-12 h-[500px] rounded-lg bg-gradient-to-b from-purple-900/20 to-sky-900/20 backdrop-blur-sm glow">
-          <Suspense fallback={<div className="flex h-full items-center justify-center">Loading 3D Projects...</div>}>
-            <Canvas camera={{ position: [0, 0, 8], fov: 50 }}>
-              <ProjectsScene onProjectClick={setSelectedProject} />
-            </Canvas>
-          </Suspense>
+    <section id="projects" className="py-24 relative z-10">
+      <div className="container mx-auto px-4 max-w-6xl">
+        
+        {/* Section Header */}
+        <div className="flex items-center mb-10 font-mono text-xl md:text-2xl text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-800 pb-4">
+          <Server className="mr-3 text-[var(--aws-amber)]" />
+          <span className="text-green-600 dark:text-green-500 mr-2">$</span> 
+          <span>aws ec2 describe-instances --filters "Name=instance-state-name,Values=running"</span>
         </div>
 
-        {selectedProject !== null && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="floating-element"
-          >
-            <Card className="bg-white/80 backdrop-blur-sm dark:bg-gray-800/80 border-2 border-sky-500/30 dark:border-purple-500/30">
-              <CardHeader className="bg-gradient-to-r from-sky-500/20 to-purple-500/20">
-                <CardTitle>{projects[selectedProject].title}</CardTitle>
-                <CardDescription>{projects[selectedProject].description}</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <p className="text-gray-600 dark:text-gray-300">{projects[selectedProject].details}</p>
-              </CardContent>
-            </Card>
-          </motion.div>
-        )}
+        {/* Dashboard Grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          {projects.map((project, index) => (
+            <motion.div
+              key={project.id}
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: true }}
+              className="bg-white/90 dark:bg-[#0a0f1c]/90 backdrop-blur-md border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden shadow-lg hover:border-sky-500/50 dark:hover:border-[var(--go-cyan)]/50 transition-colors group"
+            >
+              {/* Instance Header */}
+              <div className="flex justify-between items-center px-5 py-3 bg-gray-50 dark:bg-[#040814] border-b border-gray-200 dark:border-gray-800">
+                <div className="flex items-center space-x-3">
+                  {project.icon}
+                  <div>
+                    <h3 className="font-bold text-gray-900 dark:text-white text-base">{project.name}</h3>
+                    <div className="text-xs font-mono text-gray-500">{project.id} | {project.region}</div>
+                  </div>
+                </div>
+                <div className="flex items-center space-x-2 bg-green-100 dark:bg-green-900/20 px-2 py-1 rounded border border-green-200 dark:border-green-800/30">
+                  <span className="relative flex h-2 w-2">
+                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                  </span>
+                  <span className="text-[10px] font-mono text-green-700 dark:text-green-400 font-bold tracking-wider">{project.status}</span>
+                </div>
+              </div>
 
-        <div className="mt-8 text-center text-gray-600 dark:text-gray-300">
-          <p>Click on a project sphere to view details</p>
+              {/* Instance Body */}
+              <div className="p-5">
+                <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 leading-relaxed font-mono">
+                  {project.description}
+                </p>
+
+                {/* Metrics Mockup */}
+                <div className="flex justify-between items-center mb-4 p-3 bg-gray-50 dark:bg-[#111827] rounded-lg border border-gray-100 dark:border-gray-800">
+                  <div className="text-center w-1/2 border-r border-gray-200 dark:border-gray-700">
+                    <div className="text-[10px] text-gray-500 dark:text-gray-400 font-mono uppercase tracking-wider mb-1">Uptime</div>
+                    <div className="text-sm font-bold text-gray-800 dark:text-gray-200">{project.metrics.uptime}</div>
+                  </div>
+                  <div className="text-center w-1/2">
+                    <div className="text-[10px] text-gray-500 dark:text-gray-400 font-mono uppercase tracking-wider mb-1">Avg Latency</div>
+                    <div className="text-sm font-bold text-gray-800 dark:text-gray-200">{project.metrics.latency}</div>
+                  </div>
+                </div>
+
+                {/* Tech Tags */}
+                <div className="flex flex-wrap gap-2 mt-auto">
+                  {project.tech.map((t, i) => (
+                    <span key={i} className="text-xs font-mono px-2 py-1 bg-gray-100 dark:bg-[#1f2937] text-gray-600 dark:text-gray-300 rounded border border-gray-200 dark:border-gray-700">
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </motion.div>
+          ))}
         </div>
-      </motion.div>
+      </div>
     </section>
   )
 }
