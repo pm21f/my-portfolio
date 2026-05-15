@@ -1,126 +1,238 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Activity, Server, Database, Globe, Cpu, Terminal } from "lucide-react"
+import { ArrowUpRight, Github } from "lucide-react"
 
 const projects = [
   {
-    id: "i-09a8b7c6d5e4f32",
+    num: "01",
     name: "Vigilance AI",
     type: "Serverless Engine",
-    status: "HEALTHY",
     region: "us-east-1",
-    description: "A serverless market perception engine architected with AWS and provisioned entirely via Terraform.",
-    tech: ["AWS", "Terraform", "Serverless"],
-    metrics: { uptime: "99.99%", latency: "42ms" },
-    icon: <Globe className="w-5 h-5 text-[var(--aws-amber)]" />
+    status: "HEALTHY",
+    description:
+      "A serverless market-perception engine built entirely on AWS and provisioned via Terraform. Real-time data ingestion using Lambda + SQS pipeline with DynamoDB persistence.",
+    tech: ["AWS Lambda", "Terraform", "SQS", "DynamoDB", "CloudWatch"],
+    metrics: [
+      { label: "Uptime",   val: "99.99%" },
+      { label: "Latency",  val: "42 ms"  },
+      { label: "Cost/mo",  val: "$0.003" },
+    ],
+    color: "#f59e0b",
+    github: "https://github.com/pm21f",
   },
   {
-    id: "i-0a1b2c3d4e5f678",
+    num: "02",
     name: "Real-Time Comm Engine",
     type: "WebSocket Backend",
-    status: "HEALTHY",
     region: "ap-south-1",
-    description: "High-concurrency backend infrastructure for a WhatsApp clone, managing real-time messaging and state.",
-    tech: ["Golang", "PostgreSQL", "WebSockets"],
-    metrics: { uptime: "99.95%", latency: "12ms" },
-    icon: <Activity className="w-5 h-5 text-[var(--go-cyan)]" />
+    status: "HEALTHY",
+    description:
+      "High-concurrency messaging backend for a WhatsApp-like platform. Handles real-time presence, message routing, and persistent storage with sub-20 ms delivery.",
+    tech: ["Golang", "Gin", "WebSockets", "PostgreSQL", "Redis"],
+    metrics: [
+      { label: "Uptime",        val: "99.95%" },
+      { label: "Msg latency",   val: "12 ms"  },
+      { label: "Concurrent",    val: "10 k+"  },
+    ],
+    color: "#00d4ff",
+    github: "https://github.com/pm21f",
   },
   {
-    id: "i-0f9e8d7c6b5a432",
+    num: "03",
     name: "Restaurant Core API",
     type: "Monolith Service",
-    status: "HEALTHY",
     region: "eu-central-1",
-    description: "Robust backend ordering platform managing transactions, menu states, and delivery routing.",
-    tech: ["Django", "Python", "REST API"],
-    metrics: { uptime: "99.9%", latency: "85ms" },
-    icon: <Database className="w-5 h-5 text-[var(--tf-purple)]" />
+    status: "HEALTHY",
+    description:
+      "Full-featured ordering platform built with Django REST framework — managing transactions, menu state, and delivery routing with Postgres as the source of truth.",
+    tech: ["Django", "Python", "REST API", "PostgreSQL", "Celery"],
+    metrics: [
+      { label: "Uptime",   val: "99.9%" },
+      { label: "Latency",  val: "85 ms" },
+      { label: "APIs",     val: "32"    },
+    ],
+    color: "#7c3aed",
+    github: "https://github.com/pm21f",
   },
   {
-    id: "i-0123456789abcde",
-    name: "IoT Edge Node (VECTOR)",
+    num: "04",
+    name: "IoT Edge Node · VECTOR",
     type: "Hardware Prototype",
-    status: "ONLINE",
     region: "edge-device",
-    description: "Wi-Fi controlled autonomous robotics platform utilizing ESP32 microcontrollers and ultrasonic sensors.",
-    tech: ["ESP32", "C++", "Hardware"],
-    metrics: { uptime: "98.5%", latency: "5ms" },
-    icon: <Cpu className="w-5 h-5 text-green-500" />
-  }
+    status: "ONLINE",
+    description:
+      "Wi-Fi controlled autonomous robotics platform on ESP32 microcontrollers. Ultrasonic sensor arrays enable real-time obstacle detection and autonomous navigation.",
+    tech: ["ESP32", "C++", "Wi-Fi", "FreeRTOS", "Ultrasonic"],
+    metrics: [
+      { label: "Uptime",   val: "98.5%" },
+      { label: "Latency",  val: "5 ms"  },
+      { label: "Nodes",    val: "3"     },
+    ],
+    color: "#00ff88",
+    github: "https://github.com/pm21f",
+  },
 ]
 
 export default function Projects() {
   return (
-    <section id="projects" className="py-24 relative z-10">
-      <div className="container mx-auto px-4 max-w-6xl">
-        
-        {/* Section Header */}
-        <div className="flex items-center mb-10 font-mono text-xl md:text-2xl text-gray-800 dark:text-gray-200 border-b border-gray-200 dark:border-gray-800 pb-4">
-          <Server className="mr-3 text-[var(--aws-amber)]" />
-          <span className="text-green-600 dark:text-green-500 mr-2">$</span> 
-          <span>aws ec2 describe-instances --filters "Name=instance-state-name,Values=running"</span>
-        </div>
+    <section id="projects" className="py-32 relative z-10">
+      <div className="max-w-5xl mx-auto px-6">
 
-        {/* Dashboard Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          {projects.map((project, index) => (
+        {/* header */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="flex items-center gap-4 mb-4"
+        >
+          <div className="h-px w-8" style={{ background: "rgba(0,212,255,0.4)" }} />
+          <span className="section-tag">04 — Projects</span>
+        </motion.div>
+
+        <motion.h2
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="display-text-sm text-white mb-16"
+        >
+          Selected<span className="text-gradient-cyan"> Work</span>
+        </motion.h2>
+
+        <div className="space-y-6">
+          {projects.map((p, i) => (
             <motion.div
-              key={project.id}
-              initial={{ opacity: 0, y: 20 }}
+              key={p.num}
+              initial={{ opacity: 0, y: 32 }}
               whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              className="bg-white/90 dark:bg-[#0a0f1c]/90 backdrop-blur-md border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden shadow-lg hover:border-sky-500/50 dark:hover:border-[var(--go-cyan)]/50 transition-colors group"
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.55, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+              className="group relative rounded-2xl overflow-hidden transition-all duration-400"
+              style={{
+                background: "rgba(8,18,35,0.75)",
+                border: "1px solid rgba(0,212,255,0.08)",
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.borderColor = `${p.color}35`
+                e.currentTarget.style.boxShadow   = `0 0 50px ${p.color}08, 0 20px 50px rgba(0,0,0,0.3)`
+                e.currentTarget.style.transform   = "translateY(-2px)"
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.borderColor = "rgba(0,212,255,0.08)"
+                e.currentTarget.style.boxShadow   = "none"
+                e.currentTarget.style.transform   = "translateY(0)"
+              }}
             >
-              {/* Instance Header */}
-              <div className="flex justify-between items-center px-5 py-3 bg-gray-50 dark:bg-[#040814] border-b border-gray-200 dark:border-gray-800">
-                <div className="flex items-center space-x-3">
-                  {project.icon}
-                  <div>
-                    <h3 className="font-bold text-gray-900 dark:text-white text-base">{project.name}</h3>
-                    <div className="text-xs font-mono text-gray-500">{project.id} | {project.region}</div>
-                  </div>
-                </div>
-                <div className="flex items-center space-x-2 bg-green-100 dark:bg-green-900/20 px-2 py-1 rounded border border-green-200 dark:border-green-800/30">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
-                  </span>
-                  <span className="text-[10px] font-mono text-green-700 dark:text-green-400 font-bold tracking-wider">{project.status}</span>
-                </div>
-              </div>
+              {/* left accent bar */}
+              <div
+                className="absolute left-0 top-0 bottom-0 w-1 rounded-l-2xl"
+                style={{ background: p.color, boxShadow: `0 0 16px ${p.color}` }}
+              />
 
-              {/* Instance Body */}
-              <div className="p-5">
-                <p className="text-gray-600 dark:text-gray-300 text-sm mb-4 leading-relaxed font-mono">
-                  {project.description}
-                </p>
+              <div className="pl-8 pr-6 py-7 flex flex-col md:flex-row md:items-start gap-6">
 
-                {/* Metrics Mockup */}
-                <div className="flex justify-between items-center mb-4 p-3 bg-gray-50 dark:bg-[#111827] rounded-lg border border-gray-100 dark:border-gray-800">
-                  <div className="text-center w-1/2 border-r border-gray-200 dark:border-gray-700">
-                    <div className="text-[10px] text-gray-500 dark:text-gray-400 font-mono uppercase tracking-wider mb-1">Uptime</div>
-                    <div className="text-sm font-bold text-gray-800 dark:text-gray-200">{project.metrics.uptime}</div>
-                  </div>
-                  <div className="text-center w-1/2">
-                    <div className="text-[10px] text-gray-500 dark:text-gray-400 font-mono uppercase tracking-wider mb-1">Avg Latency</div>
-                    <div className="text-sm font-bold text-gray-800 dark:text-gray-200">{project.metrics.latency}</div>
-                  </div>
+                {/* project number */}
+                <div
+                  className="font-mono text-5xl font-bold shrink-0 leading-none select-none"
+                  style={{ color: `${p.color}18` }}
+                >
+                  {p.num}
                 </div>
 
-                {/* Tech Tags */}
-                <div className="flex flex-wrap gap-2 mt-auto">
-                  {project.tech.map((t, i) => (
-                    <span key={i} className="text-xs font-mono px-2 py-1 bg-gray-100 dark:bg-[#1f2937] text-gray-600 dark:text-gray-300 rounded border border-gray-200 dark:border-gray-700">
-                      {t}
+                {/* main content */}
+                <div className="flex-1 min-w-0">
+                  <div className="flex flex-wrap items-center gap-3 mb-2">
+                    <h3 className="text-xl font-bold" style={{ color: "#f1f5f9" }}>{p.name}</h3>
+                    <span
+                      className="text-xs font-mono px-2 py-0.5 rounded"
+                      style={{ background: `${p.color}12`, border: `1px solid ${p.color}28`, color: p.color }}
+                    >
+                      {p.type}
                     </span>
-                  ))}
+                    <span className="flex items-center gap-1.5 text-xs font-mono" style={{ color: "#334155" }}>
+                      {p.region}
+                    </span>
+
+                    {/* live status */}
+                    <span
+                      className="flex items-center gap-1.5 text-xs font-mono ml-auto"
+                      style={{ color: p.color }}
+                    >
+                      <span
+                        className="w-1.5 h-1.5 rounded-full inline-block"
+                        style={{ background: p.color, boxShadow: `0 0 6px ${p.color}`, animation: "pulse-dot 2s ease-in-out infinite" }}
+                      />
+                      {p.status}
+                    </span>
+                  </div>
+
+                  <p className="text-sm font-mono mb-5 leading-relaxed" style={{ color: "#4a5568" }}>
+                    {p.description}
+                  </p>
+
+                  {/* metrics strip */}
+                  <div className="flex flex-wrap gap-4 mb-5">
+                    {p.metrics.map(m => (
+                      <div key={m.label}>
+                        <div className="text-xs font-mono uppercase tracking-wider mb-0.5" style={{ color: "#334155" }}>
+                          {m.label}
+                        </div>
+                        <div className="text-sm font-bold font-mono" style={{ color: p.color }}>{m.val}</div>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* tech + links row */}
+                  <div className="flex flex-wrap items-center justify-between gap-4">
+                    <div className="flex flex-wrap gap-2">
+                      {p.tech.map(t => (
+                        <span
+                          key={t}
+                          className="text-xs font-mono px-2.5 py-1 rounded-lg"
+                          style={{
+                            background: "rgba(0,0,0,0.4)",
+                            border: "1px solid rgba(0,212,255,0.1)",
+                            color: "#4a5568",
+                          }}
+                        >
+                          {t}
+                        </span>
+                      ))}
+                    </div>
+
+                    <div className="flex items-center gap-4">
+                      <a
+                        href={p.github}
+                        target="_blank" rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 text-xs font-mono transition-colors duration-200"
+                        style={{ color: "#334155" }}
+                        onMouseEnter={e => { e.currentTarget.style.color = p.color }}
+                        onMouseLeave={e => { e.currentTarget.style.color = "#334155" }}
+                      >
+                        <Github className="w-3.5 h-3.5" />
+                        Source
+                      </a>
+                      <a
+                        href={p.github}
+                        target="_blank" rel="noopener noreferrer"
+                        className="flex items-center gap-1 text-xs font-mono transition-colors duration-200"
+                        style={{ color: "#334155" }}
+                        onMouseEnter={e => { e.currentTarget.style.color = p.color }}
+                        onMouseLeave={e => { e.currentTarget.style.color = "#334155" }}
+                      >
+                        Details
+                        <ArrowUpRight className="w-3 h-3" />
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </motion.div>
           ))}
         </div>
+
       </div>
     </section>
   )

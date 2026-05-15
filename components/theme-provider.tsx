@@ -12,10 +12,8 @@ export function ThemeProvider({ children, ...props }: ThemeProviderProps) {
   }, [])
 
   if (!mounted) {
-    // Return a dark background placeholder to prevent a flash of white
-    return <div className="min-h-screen bg-[#040814] text-slate-300" /> 
+    return <div style={{ minHeight: "100vh", background: "#020817" }} />
   }
 
-  // We recommend passing defaultTheme="dark" and attribute="class" from your layout.tsx
   return <NextThemesProvider {...props}>{children}</NextThemesProvider>
 }

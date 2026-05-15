@@ -1,135 +1,124 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Award, FileBadge } from "lucide-react"
+import { Trophy, ShieldCheck, FileBadge, Award } from "lucide-react"
 
-const auditLogs = [
+const items = [
   {
-    eventId: "EVT-2025-10A",
-    timestamp: "Oct 2025",
-    type: "COMPETITION_WIN",
+    icon: Trophy,
+    title: "Hackathon Winner — Project Supertech",
     issuer: "Maharaja Agrasen College",
-    title: "Hackathon Winner: Project Supertech",
+    date: "Oct 2025",
     status: "VERIFIED",
-    description: "Secured top position for innovative technical implementation and problem-solving.",
-    color: "text-[var(--sky-blue)]",
-    bg: "bg-[var(--sky-blue)]/10"
+    color: "#00d4ff",
   },
   {
-    eventId: "EVT-2025-10B",
-    timestamp: "Oct 2025",
-    type: "COMPETITION_WIN",
+    icon: Award,
+    title: "Hackathon Winner — Project Prayas",
     issuer: "Maharaja Agrasen College",
-    title: "Hackathon Winner: Project Prayas",
+    date: "Oct 2025",
     status: "VERIFIED",
-    description: "Awarded for outstanding prototype and system architecture design.",
-    color: "text-[var(--tf-purple)]",
-    bg: "bg-[var(--tf-purple)]/10"
+    color: "#7c3aed",
   },
   {
-    eventId: "SEC-2023-05X",
-    timestamp: "May 2023",
-    type: "CERTIFICATION",
-    issuer: "Amazon Web Services",
+    icon: ShieldCheck,
     title: "AWS Certified Solutions Architect",
+    issuer: "Amazon Web Services",
+    date: "May 2023",
     status: "ACTIVE",
-    description: "Validated expertise in designing distributed applications and systems on the AWS platform.",
-    color: "text-[var(--aws-amber)]",
-    bg: "bg-[var(--aws-amber)]/10"
+    color: "#f59e0b",
   },
   {
-    eventId: "SEC-2023-01Y",
-    timestamp: "Jan 2023",
-    type: "CERTIFICATION",
+    icon: FileBadge,
+    title: "HashiCorp Terraform Associate",
     issuer: "HashiCorp",
-    title: "Terraform Associate",
+    date: "Jan 2023",
     status: "ACTIVE",
-    description: "Certified competency in infrastructure as code (IaC) concepts and HashiCorp tools.",
-    color: "text-slate-500",
-    bg: "bg-slate-800/50"
-  }
+    color: "#00ff88",
+  },
 ]
 
 export default function Achievements() {
   return (
-    <section id="achievements" className="py-24 relative z-10">
-      <div className="container mx-auto px-4 max-w-5xl">
-        
-        {/* Section Header - Clean & Professional */}
-        <div className="mb-12">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">
-            Certifications & Audits
-          </h2>
-          <div className="w-16 h-1.5 bg-[var(--tf-purple)] rounded-full"></div>
-        </div>
+    <section id="achievements" className="py-32 relative z-10">
+      <div className="max-w-5xl mx-auto px-6">
 
-        {/* Audit Log Table Wrapper */}
-        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-xl">
-          
-          {/* Table Header (Desktop only) */}
-          <div className="hidden md:grid grid-cols-12 gap-4 px-6 py-3 bg-slate-50 dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800 text-xs font-mono font-bold text-slate-500 uppercase tracking-wider">
-            <div className="col-span-2">Timestamp</div>
-            <div className="col-span-2">Event ID</div>
-            <div className="col-span-5">Details</div>
-            <div className="col-span-3 text-right">Status</div>
-          </div>
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="flex items-center gap-4 mb-4"
+        >
+          <div className="h-px w-8" style={{ background: "rgba(0,212,255,0.4)" }} />
+          <span className="section-tag">05 — Achievements</span>
+        </motion.div>
 
-          {/* Log Entries */}
-          <div className="divide-y divide-slate-100 dark:divide-slate-800/50">
-            {auditLogs.map((log, index) => (
+        <motion.h2
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.1 }}
+          className="display-text-sm text-white mb-16"
+        >
+          Certs &amp;<span className="text-gradient-cyan"> Awards</span>
+        </motion.h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+          {items.map((item, i) => {
+            const Icon = item.icon
+            return (
               <motion.div
-                key={log.eventId}
-                initial={{ opacity: 0, x: -10 }}
-                whileInView={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.1 }}
-                viewport={{ once: true }}
-                className="group hover:bg-slate-50 dark:hover:bg-slate-800/50 transition-colors"
+                key={item.title}
+                initial={{ opacity: 0, y: 24 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-40px" }}
+                transition={{ duration: 0.5, delay: i * 0.08 }}
+                className="group flex items-start gap-4 p-5 rounded-2xl transition-all duration-300"
+                style={{ background: "rgba(8,18,35,0.7)", border: `1px solid ${item.color}15` }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.borderColor  = `${item.color}40`
+                  e.currentTarget.style.boxShadow    = `0 0 30px ${item.color}08`
+                  e.currentTarget.style.transform    = "translateY(-2px)"
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.borderColor  = `${item.color}15`
+                  e.currentTarget.style.boxShadow    = "none"
+                  e.currentTarget.style.transform    = "translateY(0)"
+                }}
               >
-                <div className="grid grid-cols-1 md:grid-cols-12 gap-4 px-6 py-5 items-center">
-                  
-                  {/* Timestamp & Type (Mobile + Desktop) */}
-                  <div className="md:col-span-2 flex flex-row md:flex-col justify-between md:justify-start">
-                    <span className="text-sm font-mono text-slate-600 dark:text-slate-400">{log.timestamp}</span>
-                    <span className={`md:hidden px-2 py-0.5 rounded text-[10px] font-mono font-bold tracking-wider ${log.bg} ${log.color}`}>
-                      {log.status}
+                <div
+                  className="p-3 rounded-xl shrink-0"
+                  style={{ background: `${item.color}12`, border: `1px solid ${item.color}25` }}
+                >
+                  <Icon className="w-5 h-5" style={{ color: item.color }} />
+                </div>
+
+                <div className="flex-1 min-w-0">
+                  <div className="flex items-start justify-between gap-2">
+                    <h4 className="font-mono text-sm font-semibold leading-snug" style={{ color: "#e2e8f0" }}>
+                      {item.title}
+                    </h4>
+                    <span
+                      className="shrink-0 text-xs font-mono font-bold px-2 py-0.5 rounded"
+                      style={{
+                        background: `${item.color}10`,
+                        border: `1px solid ${item.color}28`,
+                        color: item.color,
+                      }}
+                    >
+                      {item.status}
                     </span>
                   </div>
-
-                  {/* Event ID */}
-                  <div className="md:col-span-2 font-mono text-xs text-slate-400 hidden md:block">
-                    {log.eventId}
+                  <div className="flex items-center gap-2 mt-2 text-xs font-mono" style={{ color: "#334155" }}>
+                    <span>{item.issuer}</span>
+                    <span>·</span>
+                    <span>{item.date}</span>
                   </div>
-
-                  {/* Details */}
-                  <div className="md:col-span-5">
-                    <div className="flex items-center space-x-2 mb-1">
-                      {log.type === "CERTIFICATION" ? <FileBadge className="w-4 h-4 text-slate-400" /> : <Award className="w-4 h-4 text-[var(--aws-amber)]" />}
-                      <h4 className="font-bold text-slate-900 dark:text-white text-sm">{log.title}</h4>
-                    </div>
-                    <p className="text-xs text-slate-500 font-mono mb-1">Issuer: {log.issuer}</p>
-                    <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed mt-2 md:mt-1">
-                      {log.description}
-                    </p>
-                  </div>
-
-                  {/* Status (Desktop only) */}
-                  <div className="md:col-span-3 text-right hidden md:flex justify-end items-center">
-                    <div className={`px-3 py-1 rounded border border-current text-[11px] font-mono font-bold tracking-wider ${log.color} ${log.bg}`}>
-                      [ {log.status} ]
-                    </div>
-                  </div>
-
                 </div>
               </motion.div>
-            ))}
-          </div>
-          
-          {/* EOF Indicator */}
-          <div className="px-6 py-2 bg-slate-50 dark:bg-slate-950 border-t border-slate-200 dark:border-slate-800 text-xs font-mono text-slate-500">
-            EOF - Log parsing complete.
-          </div>
+            )
+          })}
         </div>
-
       </div>
     </section>
   )

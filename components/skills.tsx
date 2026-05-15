@@ -1,183 +1,154 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { FileCode2, Copy, Check } from "lucide-react"
-import { useState } from "react"
 
-const yamlConfig = `version: "3.8"
+const categories = [
+  {
+    id: "cloud",
+    title: "Cloud & Infra",
+    color: "#f59e0b",
+    skills: ["AWS EC2", "Lambda", "S3", "VPC", "IAM", "CloudWatch", "EKS", "Route 53"],
+  },
+  {
+    id: "iac",
+    title: "IaC & CI/CD",
+    color: "#7c3aed",
+    skills: ["Terraform", "Docker", "Kubernetes", "Helm", "GitHub Actions", "Jenkins", "Ansible"],
+  },
+  {
+    id: "backend",
+    title: "Backend & APIs",
+    color: "#00ff88",
+    skills: ["Go (Gin/Echo)", "Python", "Django", "REST", "gRPC", "WebSockets", "Microservices"],
+  },
+  {
+    id: "data",
+    title: "Databases",
+    color: "#00d4ff",
+    skills: ["PostgreSQL", "DynamoDB", "Redis", "AWS S3", "MongoDB", "SQL"],
+  },
+]
 
-services:
-  infrastructure:
-    image: piyush/cloud-engineer:latest
-    container_name: core-skills
-    environment:
-      - PRIMARY_CLOUD=AWS
-      - IAC_TOOL=Terraform
-      - ORCHESTRATION=Kubernetes
-    networks:
-      - devops-net
-
-  backend_services:
-    build:
-      context: ./languages
-    depends_on:
-      - infrastructure
-    ports:
-      - "8080:8080"
-    volumes:
-      - golang_ecosystem:/app/go
-      - ci_cd_pipelines:/app/deploy
-    labels:
-      - "framework.go=Gin,Echo,GORM"
-      - "focus=microservices"
-
-  databases_and_storage:
-    image: managed-services:latest
-    deploy:
-      replicas: 3
-    configs:
-      - source: relational_db
-        target: PostgreSQL
-      - source: nosql_db
-        target: DynamoDB
-      - source: object_store
-        target: AWS S3
-
-networks:
-  devops-net:
-    driver: bridge
-    security:
-      - IAM_Policies
-      - VPC_Peering
-      - Security_Groups`
+const containerVariants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08 } },
+}
+const itemVariants = {
+  hidden: { opacity: 0, scale: 0.8, y: 10 },
+  show:   { opacity: 1, scale: 1,   y: 0,  transition: { duration: 0.35 } },
+}
 
 export default function Skills() {
-  const [copied, setCopied] = useState(false)
-
-  const copyToClipboard = () => {
-    navigator.clipboard.writeText(yamlConfig)
-    setCopied(true)
-    setTimeout(() => setCopied(false), 2000)
-  }
-
   return (
-    <section id="skills" className="py-24 relative z-10">
-      <div className="container mx-auto px-4 max-w-5xl">
-        
-        {/* Section Header - Fixed for High Contrast in Dark Mode */}
-        <div className="flex items-center mb-10 font-mono text-xl md:text-2xl border-b border-slate-200 dark:border-slate-800 pb-4">
-          <FileCode2 className="mr-3 text-[var(--sky-blue)]" />
-          <span className="text-[var(--term-green)] mr-2">$</span> 
-          <span className="text-slate-900 dark:text-white font-bold">cat infrastructure.yaml</span>
-        </div>
+    <section id="skills" className="py-32 relative z-10">
+      <div className="max-w-6xl mx-auto px-6">
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          {/* YAML Editor View */}
-          <motion.div 
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-            className="lg:col-span-7 bg-slate-950 rounded-xl overflow-hidden border border-slate-800 shadow-xl"
-          >
-            {/* Editor Header */}
-            <div className="flex items-center justify-between px-4 py-2 bg-slate-900 border-b border-slate-800">
-              <div className="flex space-x-2">
-                <div className="w-3 h-3 rounded-full bg-slate-700"></div>
-                <div className="w-3 h-3 rounded-full bg-slate-700"></div>
-                <div className="w-3 h-3 rounded-full bg-slate-700"></div>
+        {/* header */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="flex items-center gap-4 mb-4"
+        >
+          <div className="h-px w-8" style={{ background: "rgba(0,212,255,0.4)" }} />
+          <span className="section-tag">03 — Skills & Stack</span>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="mb-16"
+        >
+          <h2 className="display-text-sm text-white mb-3">
+            Tech<span className="text-gradient-cyan"> Stack</span>
+          </h2>
+          <p className="text-sm font-mono max-w-md" style={{ color: "#4a5568" }}>
+            Tools and technologies I use to build, deploy, and maintain production infrastructure.
+          </p>
+        </motion.div>
+
+        {/* 2×2 category grid */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          {categories.map((cat, catIdx) => (
+            <motion.div
+              key={cat.id}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true, margin: "-60px" }}
+              transition={{ duration: 0.5, delay: catIdx * 0.1 }}
+              className="rounded-2xl p-6"
+              style={{ background: "rgba(8,18,35,0.7)", border: `1px solid ${cat.color}18` }}
+            >
+              {/* category header */}
+              <div className="flex items-center gap-3 mb-5">
+                <div className="w-2 h-6 rounded-full" style={{ background: cat.color, boxShadow: `0 0 12px ${cat.color}` }} />
+                <h3 className="font-mono font-bold text-sm" style={{ color: cat.color }}>
+                  {cat.title}
+                </h3>
               </div>
-              <div className="text-slate-400 text-xs font-mono">infrastructure.yaml</div>
-              <button onClick={copyToClipboard} className="text-slate-400 hover:text-white transition-colors">
-                {copied ? <Check className="w-4 h-4 text-[var(--term-green)]" /> : <Copy className="w-4 h-4" />}
-              </button>
-            </div>
-            
-            {/* Syntax Highlighted Code */}
-            <div className="p-4 md:p-6 overflow-x-auto text-sm font-mono leading-relaxed">
-              <pre>
-                <code className="language-yaml">
-                  <span className="text-[#569cd6]">version:</span> <span className="text-[#ce9178]">"3.8"</span>{"\n\n"}
-                  <span className="text-[#569cd6]">services:</span>{"\n"}
-                  {"  "}<span className="text-[#4ec9b0]">infrastructure:</span>{"\n"}
-                  {"    "}<span className="text-[#9cdcfe]">image:</span> <span className="text-[#ce9178]">piyush/cloud-engineer:latest</span>{"\n"}
-                  {"    "}<span className="text-[#9cdcfe]">environment:</span>{"\n"}
-                  {"      - "}<span className="text-[#dcdcaa]">PRIMARY_CLOUD</span><span className="text-[#d4d4d4]">=</span><span className="text-[#ce9178]">AWS</span>{"\n"}
-                  {"      - "}<span className="text-[#dcdcaa]">IAC_TOOL</span><span className="text-[#d4d4d4]">=</span><span className="text-[#ce9178]">Terraform</span>{"\n"}
-                  {"      - "}<span className="text-[#dcdcaa]">ORCHESTRATION</span><span className="text-[#d4d4d4]">=</span><span className="text-[#ce9178]">Kubernetes, Docker</span>{"\n\n"}
-                  {"  "}<span className="text-[#4ec9b0]">backend_services:</span>{"\n"}
-                  {"    "}<span className="text-[#9cdcfe]">depends_on:</span>{"\n"}
-                  {"      - "}<span className="text-[#ce9178]">infrastructure</span>{"\n"}
-                  {"    "}<span className="text-[#9cdcfe]">volumes:</span>{"\n"}
-                  {"      - "}<span className="text-[#ce9178]">golang_ecosystem:/app/go</span> <span className="text-[#6a9955]"># Goroutines, Gin, GORM</span>{"\n"}
-                  {"      - "}<span className="text-[#ce9178]">ci_cd_pipelines:/app/deploy</span>{"\n\n"}
-                  {"  "}<span className="text-[#4ec9b0]">databases_and_storage:</span>{"\n"}
-                  {"    "}<span className="text-[#9cdcfe]">configs:</span>{"\n"}
-                  {"      - "}<span className="text-[#ce9178]">PostgreSQL</span>{"\n"}
-                  {"      - "}<span className="text-[#ce9178]">DynamoDB</span>{"\n"}
-                  {"      - "}<span className="text-[#ce9178]">AWS S3</span>{"\n\n"}
-                  <span className="text-[#569cd6]">networks:</span>{"\n"}
-                  {"  "}<span className="text-[#4ec9b0]">devops-net:</span>{"\n"}
-                  {"    "}<span className="text-[#9cdcfe]">security:</span>{"\n"}
-                  {"      - "}<span className="text-[#ce9178]">IAM_Policies</span>{"\n"}
-                  {"      - "}<span className="text-[#ce9178]">VPC, EC2, Lambda</span>
-                </code>
-              </pre>
-            </div>
-          </motion.div>
 
-          {/* Architecture/Stack Highlight Cards - Fixed for Enterprise Theme */}
-          <div className="lg:col-span-5 flex flex-col justify-center space-y-6">
-            
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.2 }}
-              viewport={{ once: true }}
-              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm hover:border-[var(--aws-amber)]/50 transition-colors"
-            >
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3 flex items-center font-mono">
-                <span className="text-[var(--aws-amber)] mr-3">☁️</span> AWS Cloud Architecture
-              </h3>
-              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                Expertise in designing secure VPC networks, deploying serverless functions (Lambda), managing scalable compute (EC2), and implementing robust IAM policies.
-              </p>
+              {/* pills */}
+              <motion.div
+                variants={containerVariants}
+                initial="hidden"
+                whileInView="show"
+                viewport={{ once: true }}
+                className="flex flex-wrap gap-2"
+              >
+                {cat.skills.map(skill => (
+                  <motion.span
+                    key={skill}
+                    variants={itemVariants}
+                    whileHover={{ scale: 1.08, y: -2 }}
+                    className="px-3 py-1.5 rounded-lg text-xs font-mono font-medium cursor-default transition-shadow duration-200"
+                    style={{
+                      background: `${cat.color}0d`,
+                      border: `1px solid ${cat.color}28`,
+                      color: cat.color,
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.boxShadow = `0 0 18px ${cat.color}30`
+                      e.currentTarget.style.borderColor = `${cat.color}60`
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.boxShadow = "none"
+                      e.currentTarget.style.borderColor = `${cat.color}28`
+                    }}
+                  >
+                    {skill}
+                  </motion.span>
+                ))}
+              </motion.div>
             </motion.div>
-
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.4 }}
-              viewport={{ once: true }}
-              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm hover:border-[var(--tf-purple)]/50 transition-colors"
-            >
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3 flex items-center font-mono">
-                <span className="text-[var(--tf-purple)] mr-3">🏗️</span> Infrastructure as Code
-              </h3>
-              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                Utilizing Terraform to automate and manage infrastructure state, coupled with Docker and Kubernetes for container orchestration and reliable CI/CD delivery.
-              </p>
-            </motion.div>
-
-            <motion.div 
-              initial={{ opacity: 0, x: 20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.6, delay: 0.6 }}
-              viewport={{ once: true }}
-              className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm hover:border-[var(--sky-blue)]/50 transition-colors"
-            >
-              <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-3 flex items-center font-mono">
-                <span className="text-[var(--sky-blue)] mr-3">⚙️</span> Cloud-Native Backends
-              </h3>
-              <p className="text-slate-600 dark:text-slate-400 text-sm leading-relaxed">
-                Building high-performance, concurrent backend systems leveraging Golang (Goroutines, Gin, GORM), optimized for microservices and scalable cloud deployments.
-              </p>
-            </motion.div>
-
-          </div>
-
+          ))}
         </div>
+
+        {/* bottom bar — big floating tech names */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.8, delay: 0.3 }}
+          className="mt-16 overflow-hidden py-4"
+          style={{ borderTop: "1px solid rgba(0,212,255,0.07)", borderBottom: "1px solid rgba(0,212,255,0.07)" }}
+        >
+          <motion.div
+            animate={{ x: ["0%", "-50%"] }}
+            transition={{ repeat: Infinity, duration: 22, ease: "linear" }}
+            className="flex gap-10 whitespace-nowrap"
+          >
+            {["AWS", "Kubernetes", "Terraform", "Docker", "Go", "Python", "PostgreSQL", "Redis", "Linux", "CI/CD",
+              "AWS", "Kubernetes", "Terraform", "Docker", "Go", "Python", "PostgreSQL", "Redis", "Linux", "CI/CD"].map((t, i) => (
+              <span key={i} className="font-mono font-bold text-sm" style={{ color: "rgba(0,212,255,0.12)" }}>
+                {t}
+              </span>
+            ))}
+          </motion.div>
+        </motion.div>
+
       </div>
     </section>
   )

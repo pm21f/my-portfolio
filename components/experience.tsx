@@ -1,142 +1,229 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { GitCommit, CheckCircle2, CircleDashed, Terminal, ArrowRight } from "lucide-react"
+import { ArrowUpRight } from "lucide-react"
 
 const experiences = [
   {
-    id: "deploy-prod-4",
-    status: "IN_PROGRESS",
+    id: "EXP-05",
+    company: "Nogiz",
+    role: "DevOps Engineer",
+    period: "May 2026 — Present",
+    location: "Remote",
+    status: "CURRENT",
+    color: "#00d4ff",
+    highlights: [
+      "Architecting end-to-end DevOps pipelines for production-grade systems.",
+      "Container orchestration with Kubernetes and full infra automation via Terraform.",
+      "Building CI/CD workflows, monitoring stacks, and alerting for high-availability services.",
+    ],
+  },
+  {
+    id: "EXP-04",
+    company: "CoderRoots",
     role: "Cloud Engineer",
-    company: "CoderRoots",
-    period: "Dec 2025 – Present",
+    period: "Dec 2025 — Apr 2026",
     location: "Mohali",
-    logs: [
-      "Configuring AWS infrastructure and serverless architectures.",
-      "Optimizing cloud resource allocation for cost-efficiency.",
-      "Developing and maintaining CI/CD pipelines for automated deployments.",
+    status: "COMPLETED",
+    color: "#f59e0b",
+    highlights: [
+      "Configured AWS infrastructure: Lambda, EC2, VPC, S3, IAM, CloudWatch.",
+      "Optimised cloud resource allocation — measurable cost reduction across services.",
+      "Built and maintained CI/CD pipelines for zero-downtime automated deployments.",
     ],
   },
   {
-    id: "deploy-prod-3",
-    status: "SUCCESS",
+    id: "EXP-03",
+    company: "CoderRoots",
     role: "Cloud Computing Intern",
-    company: "CoderRoots",
-    period: "June 2025 – Aug 2025",
+    period: "Jun 2025 — Aug 2025",
     location: "Mohali",
-    logs: [
-      "Assisted in deploying and monitoring scalable cloud infrastructure.",
-      "Gained hands-on experience with AWS core services and infrastructure as code.",
-      "Collaborated with senior engineers to troubleshoot and streamline deployment pipelines.",
+    status: "COMPLETED",
+    color: "#00ff88",
+    highlights: [
+      "Deployed and monitored scalable cloud infrastructure on AWS.",
+      "Hands-on with core AWS services and infrastructure as code principles.",
+      "Collaborated with senior engineers to streamline deployment pipelines.",
     ],
   },
   {
-    id: "deploy-prod-2",
-    status: "SUCCESS",
-    role: "Linux / CCNA Intern",
+    id: "EXP-02",
     company: "Think Next Tech",
-    period: "June 2024 – Aug 2024",
+    role: "Linux / CCNA Intern",
+    period: "Jun 2024 — Aug 2024",
     location: "Mohali",
-    logs: [
-      "Executed shell scripting and fundamental Linux system administration.",
-      "Architected networking solutions covering IP routing, subnetting, and OSI layers.",
-      "Simulated complex enterprise networks using Cisco Packet Tracer.",
+    status: "COMPLETED",
+    color: "#7c3aed",
+    highlights: [
+      "Shell scripting and Linux system administration tasks.",
+      "IP routing, subnetting, and OSI-layer network design.",
+      "Complex enterprise network simulation with Cisco Packet Tracer.",
     ],
   },
   {
-    id: "deploy-prod-1",
-    status: "SUCCESS",
-    role: "Java Developer Intern",
+    id: "EXP-01",
     company: "Excellence Tech",
-    period: "June 2023 – Aug 2023",
+    role: "Java Developer Intern",
+    period: "Jun 2023 — Aug 2023",
     location: "Mohali",
-    logs: [
-      "Built Spring Boot applications with secure authentication modules.",
-      "Engineered user-friendly REST APIs and scalable backend services.",
-      "Implemented Servlet/JSP for analytics-based performance improvements.",
+    status: "COMPLETED",
+    color: "#a78bfa",
+    highlights: [
+      "Spring Boot applications with secure authentication modules.",
+      "REST API design and scalable backend service implementation.",
+      "Servlet/JSP for analytics-driven performance improvements.",
     ],
   },
 ]
 
 export default function Experience() {
   return (
-    <section id="experience" className="py-24 relative z-10">
-      <div className="container mx-auto px-4 max-w-4xl">
-        
-        {/* Section Header */}
-        <div className="flex items-center mb-12 font-mono text-xl md:text-2xl text-slate-800 dark:text-slate-200 border-b border-slate-200 dark:border-slate-800 pb-4">
-          <Terminal className="mr-3 text-[var(--sky-blue)]" />
-          <span className="text-[var(--term-green)] mr-2">$</span> 
-          <span>kubectl get deployments --namespace=career</span>
-        </div>
+    <section id="experience" className="py-32 relative z-10">
+      <div className="max-w-5xl mx-auto px-6">
 
-        {/* Pipeline Container */}
-        <div className="relative border-l-2 border-slate-200 dark:border-slate-800 ml-4 md:ml-6 space-y-12">
-          
-          {experiences.map((exp, index) => (
-            <motion.div
-              key={exp.id}
-              initial={{ opacity: 0, x: -20 }}
-              whileInView={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.5, delay: index * 0.2 }}
-              viewport={{ once: true }}
-              className="relative pl-8 md:pl-12"
-            >
-              {/* Timeline Node */}
-              <div className="absolute -left-[17px] top-1 bg-white dark:bg-slate-900 p-1">
-                {exp.status === "SUCCESS" ? (
-                  <CheckCircle2 className="h-6 w-6 text-[var(--term-green)] bg-white dark:bg-slate-900 rounded-full" />
-                ) : (
-                  <CircleDashed className="h-6 w-6 text-[var(--aws-amber)] animate-spin-slow bg-white dark:bg-slate-900 rounded-full" />
-                )}
-              </div>
+        {/* section header */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="flex items-center gap-4 mb-4"
+        >
+          <div className="h-px w-8" style={{ background: "rgba(0,212,255,0.4)" }} />
+          <span className="section-tag">02 — Experience</span>
+        </motion.div>
 
-              {/* Experience Card (Log Window format) */}
-              <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-lg overflow-hidden shadow-lg transition-all hover:border-[var(--sky-blue)]/50 dark:hover:border-[var(--sky-blue)]/50">
-                
-                {/* Log Header */}
-                <div className="flex flex-wrap items-center justify-between bg-slate-50 dark:bg-slate-950 px-4 py-2 border-b border-slate-200 dark:border-slate-800 font-mono text-xs md:text-sm">
-                  <div className="flex items-center space-x-3">
-                    <span className="text-slate-500 dark:text-slate-400">commit: <span className="text-[var(--sky-blue)]">{exp.id}</span></span>
-                  </div>
-                  <div className="text-slate-500 dark:text-slate-400 mt-2 md:mt-0">
-                    {exp.period} | {exp.location}
-                  </div>
-                </div>
+        <motion.h2
+          initial={{ opacity: 0, y: 16 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5, delay: 0.1 }}
+          className="display-text-sm text-white mb-16"
+        >
+          Work<span className="text-gradient-cyan"> History</span>
+        </motion.h2>
 
-                {/* Log Body */}
-                <div className="p-5 font-mono">
-                  <h3 className="text-lg font-bold text-slate-900 dark:text-white flex items-center mb-1">
-                    {exp.role} 
-                    <ArrowRight className="h-4 w-4 mx-2 text-slate-400" /> 
-                    <span className="text-[var(--tf-purple)]">{exp.company}</span>
-                  </h3>
-                  
-                  <div className="mt-4 space-y-2">
-                    {exp.logs.map((log, idx) => (
-                      <div key={idx} className="flex items-start text-sm text-slate-700 dark:text-slate-300">
-                        <span className="text-[var(--term-green)] mr-2 mt-0.5">{">"}</span>
-                        <p>{log}</p>
+        {/* timeline */}
+        <div className="relative">
+          {/* vertical line */}
+          <div
+            className="absolute left-0 top-0 bottom-0 w-px hidden md:block"
+            style={{ background: "linear-gradient(to bottom, rgba(0,212,255,0.3), rgba(0,212,255,0.05))" }}
+          />
+
+          <div className="space-y-0">
+            {experiences.map((exp, i) => (
+              <motion.div
+                key={exp.id}
+                initial={{ opacity: 0, x: -24 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.55, delay: i * 0.08, ease: [0.22, 1, 0.36, 1] }}
+                className="relative group"
+              >
+                {/* timeline dot */}
+                <div
+                  className="absolute -left-[5px] top-8 w-2.5 h-2.5 rounded-full hidden md:block transition-all duration-300 group-hover:scale-150"
+                  style={{
+                    background: exp.color,
+                    boxShadow: `0 0 10px ${exp.color}`,
+                  }}
+                />
+
+                <div
+                  className="md:pl-12 py-8 border-b transition-all duration-300 group-hover:pl-14"
+                  style={{ borderColor: "rgba(0,212,255,0.06)" }}
+                >
+                  <div className="flex flex-col md:flex-row md:items-start md:justify-between gap-3 mb-4">
+
+                    {/* left: company + role */}
+                    <div>
+                      <div className="flex items-center gap-3 mb-1">
+                        <h3
+                          className="text-2xl md:text-3xl font-bold tracking-tight"
+                          style={{ color: exp.color }}
+                        >
+                          {exp.company}
+                        </h3>
+                        {exp.status === "CURRENT" && (
+                          <span
+                            className="flex items-center gap-1.5 text-xs font-mono px-2 py-0.5 rounded-full"
+                            style={{
+                              background: "rgba(0,255,136,0.1)",
+                              border: "1px solid rgba(0,255,136,0.3)",
+                              color: "#00ff88",
+                            }}
+                          >
+                            <span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block" style={{ animation: "pulse-dot 2s ease-in-out infinite" }} />
+                            Now
+                          </span>
+                        )}
                       </div>
-                    ))}
+                      <div className="flex items-center gap-2 font-mono text-sm" style={{ color: "#94a3b8" }}>
+                        <span style={{ color: "#e2e8f0" }}>{exp.role}</span>
+                        <span style={{ color: "#334155" }}>·</span>
+                        <span>{exp.location}</span>
+                      </div>
+                    </div>
+
+                    {/* right: period + id */}
+                    <div className="text-right shrink-0">
+                      <div className="font-mono text-sm" style={{ color: "rgba(0,212,255,0.6)" }}>
+                        {exp.period}
+                      </div>
+                      <div className="font-mono text-xs mt-1" style={{ color: "#334155" }}>
+                        {exp.id}
+                      </div>
+                    </div>
                   </div>
 
-                  {/* Status Badge */}
-                  <div className="mt-5 pt-3 border-t border-slate-100 dark:border-slate-800/50 flex items-center text-xs">
-                    <span className="text-slate-500 mr-2">Status:</span>
-                    <span className={`px-2 py-0.5 rounded ${
-                      exp.status === "SUCCESS" 
-                        ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-[var(--term-green)]" 
-                        : "bg-amber-100 text-amber-700 dark:bg-amber-900/30 dark:text-[var(--aws-amber)]"
-                    }`}>
-                      {exp.status}
-                    </span>
-                  </div>
+                  {/* highlights */}
+                  <ul className="space-y-2">
+                    {exp.highlights.map((h, j) => (
+                      <motion.li
+                        key={j}
+                        initial={{ opacity: 0, x: -8 }}
+                        whileInView={{ opacity: 1, x: 0 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: i * 0.08 + j * 0.05 }}
+                        className="flex items-start gap-3 text-sm font-mono"
+                        style={{ color: "#4a5568" }}
+                      >
+                        <span className="mt-1.5 w-1 h-1 rounded-full shrink-0" style={{ background: exp.color, boxShadow: `0 0 6px ${exp.color}` }} />
+                        <span style={{ transition: "color 0.2s" }} onMouseEnter={e => { (e.target as HTMLElement).style.color = "#94a3b8" }} onMouseLeave={e => { (e.target as HTMLElement).style.color = "#4a5568" }}>{h}</span>
+                      </motion.li>
+                    ))}
+                  </ul>
                 </div>
-              </div>
-            </motion.div>
-          ))}
+              </motion.div>
+            ))}
+          </div>
         </div>
+
+        {/* education footer */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="mt-16 flex flex-col md:flex-row md:items-center md:justify-between gap-4 p-6 rounded-2xl"
+          style={{ background: "rgba(8,18,35,0.6)", border: "1px solid rgba(0,212,255,0.08)" }}
+        >
+          <div>
+            <div className="font-bold text-white text-lg">Sant Baba Bhag Singh University</div>
+            <div className="text-sm font-mono mt-1" style={{ color: "#4a5568" }}>
+              B.Tech Computer Science &amp; Engineering
+            </div>
+          </div>
+          <div className="text-right">
+            <div className="font-mono text-sm" style={{ color: "#00d4ff" }}>2022 — 2026</div>
+            <div className="flex items-center gap-1.5 text-xs font-mono mt-1" style={{ color: "#00ff88" }}>
+              <span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block" style={{ animation: "pulse-dot 2s ease-in-out infinite" }} />
+              Graduating 2026
+            </div>
+          </div>
+        </motion.div>
+
       </div>
     </section>
   )

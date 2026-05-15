@@ -1,118 +1,188 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { GraduationCap, FileText, Code2, Users, Cpu } from "lucide-react"
+import { Cpu, Users, GraduationCap } from "lucide-react"
+
+const facts = [
+  { label: "Role",          value: "DevOps Engineer",         color: "#00d4ff" },
+  { label: "Company",       value: "Nogiz",                   color: "#00ff88" },
+  { label: "Stack",         value: "AWS · K8s · Terraform",   color: "#f59e0b" },
+  { label: "Languages",     value: "Go · Python · Bash",      color: "#7c3aed" },
+  { label: "Graduating",    value: "B.Tech CSE — 2026",       color: "#a78bfa" },
+  { label: "Based in",      value: "Una, HP, India",          color: "#00d4ff" },
+]
 
 export default function About() {
   return (
-    <section id="about" className="py-24 relative z-10">
-      <div className="container mx-auto px-4 max-w-5xl">
-        
-        {/* Section Header - Clean & Professional */}
-        <div className="mb-12">
-          <h2 className="text-3xl md:text-4xl font-extrabold text-slate-900 dark:text-white tracking-tight mb-4">
-            About Me
-          </h2>
-          <div className="w-16 h-1.5 bg-[var(--sky-blue)] rounded-full"></div>
-        </div>
+    <section id="about" className="py-32 relative z-10">
+      <div className="max-w-6xl mx-auto px-6">
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          {/* Left Column: The Markdown Bio */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            viewport={{ once: true, margin: "-100px" }}
-            className="lg:col-span-8 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-lg"
-          >
-            {/* Editor Tab Bar */}
-            <div className="bg-slate-50 dark:bg-slate-950 px-4 py-2 border-b border-slate-200 dark:border-slate-800 flex items-center space-x-4 overflow-x-auto">
-              <div className="flex items-center space-x-2 text-sm font-mono text-slate-800 dark:text-slate-200 bg-white dark:bg-slate-900 px-3 py-1.5 rounded-t-md border-t border-x border-slate-200 dark:border-slate-800 -mb-[9px] z-10">
-                <FileText className="w-3 h-3 text-[var(--sky-blue)]" />
-                <span>README.md</span>
-              </div>
-              <div className="flex items-center space-x-2 text-sm font-mono text-slate-500 hover:text-slate-700 dark:hover:text-slate-300 cursor-pointer px-3 py-1.5">
-                <Code2 className="w-3 h-3 text-[var(--tf-purple)]" />
-                <span>profile.go</span>
-              </div>
-            </div>
+        {/* section tag */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.5 }}
+          className="flex items-center gap-4 mb-4"
+        >
+          <div className="h-px w-8" style={{ background: "rgba(0,212,255,0.4)" }} />
+          <span className="section-tag">01 — About</span>
+        </motion.div>
 
-            {/* Markdown Content */}
-            <div className="p-6 md:p-8 font-sans text-slate-700 dark:text-slate-300 leading-relaxed space-y-6">
-              <div>
-                <h1 className="text-3xl font-bold text-slate-900 dark:text-white mb-4 border-b border-slate-100 dark:border-slate-800 pb-2">
-                  Hello, World! 👋
-                </h1>
-                <p>
-                 Final-year Computer Science Engineering student (Class of 2026) and active Cloud Engineer at CoderRoots. Specializing in architecting scalable AWS infrastructure and high-concurrency backend systems using Go. As the Cloud Lead for the VECTOR Student Club, I lead technical strategy to bridge the gap between robust software architecture and hardware prototyping.
-                </p>
-              </div>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 items-start">
 
-              <p>
-              As a Cloud Engineer with a focus on DevOps and AWS, I leverage Terraform and Go to build and automate production-grade infrastructure. My professional focus involves optimizing cloud resource allocation for maximum efficiency and architecting robust microservices that drive modern applications. Beyond software, I lead technical initiatives for the VECTOR Club, bridging the gap between high-level cloud architecture and hardware prototyping.
+          {/* ── LEFT: bio ── */}
+          <div>
+            <motion.h2
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="display-text-sm text-white mb-8"
+            >
+              Building infra<br />
+              <span className="text-gradient-cyan">that scales.</span>
+            </motion.h2>
+
+            {[
+              "Final-year Computer Science Engineering student (Class of 2026) and DevOps Engineer at Nogiz. I specialise in architecting scalable AWS infrastructure and automating everything with Terraform and Go.",
+              "My focus is on bridging the gap between code and production — building CI/CD pipelines, container orchestration with Kubernetes, and monitoring stacks that give teams confidence in their deployments.",
+              "Beyond work, I lead the VECTOR Student Club as Cloud Lead, where I run workshops on cloud architecture and help students build real-world infrastructure projects.",
+            ].map((para, i) => (
+              <motion.p
+                key={i}
+                initial={{ opacity: 0, y: 16 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5, delay: 0.15 + i * 0.1 }}
+                className="text-sm font-mono leading-relaxed mb-5"
+                style={{ color: "#4a5568" }}
+              >
+                {para}
+              </motion.p>
+            ))}
+
+            {/* callout quote */}
+            <motion.div
+              initial={{ opacity: 0, x: -16 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.5 }}
+              className="mt-8 p-5 rounded-xl"
+              style={{
+                background: "rgba(0,212,255,0.04)",
+                borderLeft: "3px solid #00d4ff",
+              }}
+            >
+              <p className="text-sm font-mono italic" style={{ color: "#94a3b8" }}>
+                &ldquo;I lead technical strategy and architecture decisions while continuously learning
+                new technologies to enhance product and team capabilities.&rdquo;
               </p>
+            </motion.div>
+          </div>
 
-              <p>
-               
-              </p>
+          {/* ── RIGHT: quick facts + cards ── */}
+          <div className="space-y-6">
 
-              <div className="bg-slate-50 dark:bg-slate-800/50 border-l-4 border-[var(--sky-blue)] p-4 rounded-r-lg italic text-slate-600 dark:text-slate-400">
-                "I lead technical strategy and architecture decisions while continuously learning new technologies to enhance product offerings and team capabilities."
+            {/* fact grid */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="rounded-2xl p-6"
+              style={{ background: "rgba(8,18,35,0.7)", border: "1px solid rgba(0,212,255,0.1)" }}
+            >
+              <div className="text-xs font-mono mb-4" style={{ color: "rgba(0,212,255,0.4)" }}>
+                $ cat /etc/profile.json
               </div>
-            </div>
-          </motion.div>
+              <div className="space-y-3">
+                {facts.map((f, i) => (
+                  <motion.div
+                    key={f.label}
+                    initial={{ opacity: 0, x: 12 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.25 + i * 0.06 }}
+                    className="flex items-center justify-between py-1.5"
+                    style={{ borderBottom: "1px solid rgba(0,212,255,0.04)" }}
+                  >
+                    <span className="text-xs font-mono" style={{ color: "#334155" }}>
+                      {f.label}
+                    </span>
+                    <span className="text-xs font-mono font-semibold" style={{ color: f.color }}>
+                      {f.value}
+                    </span>
+                  </motion.div>
+                ))}
+              </div>
+            </motion.div>
 
-          {/* Right Column: System Specs / Education */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-            viewport={{ once: true, margin: "-100px" }}
-            className="lg:col-span-4 flex flex-col space-y-6"
-          >
-            {/* Education Card */}
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm">
-              <h3 className="flex items-center text-lg font-bold text-slate-900 dark:text-white mb-4 font-mono">
-                <GraduationCap className="w-5 h-5 mr-2 text-[var(--aws-amber)]" />
-                Runtime Env
-              </h3>
-              <div className="space-y-4">
-                <div className="border-l-2 border-slate-200 dark:border-slate-700 pl-4">
-                  <div className="text-sm font-bold text-slate-800 dark:text-slate-200">B.Tech in Computer Science</div>
-                  <div className="text-xs text-slate-500 mt-1">Sant Baba Bhag Singh University</div>
-                  <div className="text-[10px] font-mono text-[var(--sky-blue)] mt-2 uppercase tracking-wider">Status: Executing (Exp. 2026)</div>
+            {/* leadership */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.35 }}
+              className="rounded-2xl p-6 space-y-5"
+              style={{ background: "rgba(8,18,35,0.7)", border: "1px solid rgba(0,212,255,0.08)" }}
+            >
+              <div className="flex items-center gap-3">
+                <Users className="w-4 h-4" style={{ color: "#7c3aed" }} />
+                <h4 className="font-mono text-sm font-bold" style={{ color: "#e2e8f0" }}>
+                  Leadership
+                </h4>
+              </div>
+
+              <div className="flex gap-3">
+                <div className="mt-1 w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "#00ff88", marginTop: "6px" }} />
+                <div>
+                  <div className="font-mono text-sm font-semibold" style={{ color: "#e2e8f0" }}>VECTOR Student Club</div>
+                  <div className="font-mono text-xs mt-0.5" style={{ color: "#4a5568" }}>
+                    Cloud Lead — managing infrastructure workshops and software community.
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Leadership & Hardware Card */}
-            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm">
-              <h3 className="flex items-center text-lg font-bold text-slate-900 dark:text-white mb-4 font-mono">
-                <Users className="w-5 h-5 mr-2 text-[var(--tf-purple)]" />
-                Active Threads
-              </h3>
-              <ul className="space-y-4">
-                <li className="flex items-start">
-                  <span className="text-[var(--term-green)] mr-2 mt-1">{">"}</span>
-                  <div>
-                    <div className="text-sm font-bold text-slate-800 dark:text-slate-200">VECTOR Student Club</div>
-                    <div className="text-xs text-slate-500 mt-1">Cloud Lead, managing cloud infrastructure and fostering a community of software development.</div>
+              <div className="flex gap-3">
+                <div className="mt-1 w-1.5 h-1.5 rounded-full shrink-0" style={{ background: "#f59e0b", marginTop: "6px" }} />
+                <div>
+                  <div className="flex items-center gap-2 font-mono text-sm font-semibold" style={{ color: "#e2e8f0" }}>
+                    Edge Computing
+                    <Cpu className="w-3.5 h-3.5" style={{ color: "#f59e0b" }} />
                   </div>
-                </li>
-                <li className="flex items-start">
-                  <span className="text-[var(--term-green)] mr-2 mt-1">{">"}</span>
-                  <div>
-                    <div className="text-sm font-bold text-slate-800 dark:text-slate-200 flex items-center">
-                      Edge Computing <Cpu className="w-3 h-3 ml-1.5 text-slate-400" />
-                    </div>
-                    <div className="text-xs text-slate-500 mt-1">Integrating Wi-Fi robotics and autonomous sensor arrays.</div>
+                  <div className="font-mono text-xs mt-0.5" style={{ color: "#4a5568" }}>
+                    Wi-Fi robotics and autonomous sensor arrays with ESP32.
                   </div>
-                </li>
-              </ul>
-            </div>
-          </motion.div>
-          
+                </div>
+              </div>
+            </motion.div>
+
+            {/* education */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.45 }}
+              className="rounded-2xl p-6"
+              style={{ background: "rgba(8,18,35,0.7)", border: "1px solid rgba(0,212,255,0.08)" }}
+            >
+              <div className="flex items-center gap-3 mb-3">
+                <GraduationCap className="w-4 h-4" style={{ color: "#f59e0b" }} />
+                <h4 className="font-mono text-sm font-bold" style={{ color: "#e2e8f0" }}>Education</h4>
+              </div>
+              <div className="font-mono text-sm font-semibold mb-1" style={{ color: "#e2e8f0" }}>
+                B.Tech in Computer Science &amp; Engineering
+              </div>
+              <div className="font-mono text-xs" style={{ color: "#4a5568" }}>
+                Sant Baba Bhag Singh University
+              </div>
+              <div className="font-mono text-xs mt-2" style={{ color: "#00d4ff" }}>
+                2022 – 2026 &nbsp;·&nbsp;
+                <span style={{ color: "#00ff88" }}>Graduating 2026</span>
+              </div>
+            </motion.div>
+          </div>
         </div>
       </div>
     </section>

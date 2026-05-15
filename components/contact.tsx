@@ -3,218 +3,449 @@
 import type React from "react"
 import { useState } from "react"
 import { motion } from "framer-motion"
-import { Terminal, Send, Server, ShieldCheck, Activity, Loader2 } from "lucide-react"
+import { Terminal, Send, Server, ShieldCheck, Loader2, Mail, Linkedin, Github, MapPin } from "lucide-react"
 
 export default function Contact() {
-  const [formData, setFormData] = useState({
-    name: "",
-    email: "",
-    message: "",
-  })
+  const [formData, setFormData] = useState({ name: "", email: "", message: "" })
+  const [errors, setErrors] = useState<Partial<typeof formData>>({})
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [submitStatus, setSubmitStatus] = useState<"idle" | "success" | "error">("idle")
+  const [errorMsg, setErrorMsg] = useState("")
+
+  const validate = () => {
+    const errs: Partial<typeof formData> = {}
+    if (!formData.name.trim()) errs.name = "Name is required"
+    if (!formData.email.trim()) {
+      errs.email = "Email is required"
+    } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+      errs.email = "Enter a valid email"
+    }
+    if (!formData.message.trim()) errs.message = "Message is required"
+    else if (formData.message.trim().length < 10) errs.message = "Message too short (min 10 chars)"
+    return errs
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target
     setFormData((prev) => ({ ...prev, [name]: value }))
+    if (errors[name as keyof typeof errors]) {
+      setErrors((prev) => ({ ...prev, [name]: "" }))
+    }
     if (submitStatus !== "idle") setSubmitStatus("idle")
   }
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
+    const errs = validate()
+    if (Object.keys(errs).length > 0) {
+      setErrors(errs)
+      return
+    }
+
     setIsSubmitting(true)
+    setErrorMsg("")
 
     try {
-      // Simulate API latency or replace with your actual fetch call
       const response = await fetch("/api/send-email", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),
       })
-
       const data = await response.json()
-
       if (data.success) {
         setSubmitStatus("success")
         setFormData({ name: "", email: "", message: "" })
+        setErrors({})
       } else {
         setSubmitStatus("error")
+        setErrorMsg(data.message || "Something went wrong. Please try again.")
       }
-    } catch (error) {
-      // Fallback for simulation if API route doesn't exist yet
-      setTimeout(() => {
-        setSubmitStatus("success")
-        setFormData({ name: "", email: "", message: "" })
-        setIsSubmitting(false)
-      }, 1500)
+    } catch {
+      setSubmitStatus("error")
+      setErrorMsg("Network error. Please check your connection and try again.")
     } finally {
       setIsSubmitting(false)
     }
   }
 
   return (
-    <section id="contact" className="py-24 relative z-10">
-      <div className="container mx-auto px-4 max-w-6xl">
-        
-        {/* Section Header */}
-        <div className="flex items-center mb-10 font-mono text-xl md:text-2xl text-slate-800 dark:text-slate-200 border-b border-slate-200 dark:border-slate-800 pb-4">
-          <Terminal className="mr-3 text-[var(--sky-blue)]" />
-          <span className="text-[var(--term-green)] mr-2">$</span> 
+    <section id="contact" className="py-32 relative z-10">
+      <div className="max-w-6xl mx-auto px-6">
+
+        {/* Section header */}
+        <motion.div
+          initial={{ opacity: 0, x: -20 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: true }}
+          className="flex items-center gap-4 mb-6"
+        >
+          <div className="h-px w-8" style={{ background: "rgba(0,212,255,0.4)" }} />
+          <span className="section-marker">06 — Contact</span>
+          <div className="h-px flex-1" style={{ background: "rgba(0,212,255,0.08)" }} />
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0 }}
+          whileInView={{ opacity: 1 }}
+          viewport={{ once: true }}
+          className="flex items-center gap-3 font-mono text-sm mb-12"
+          style={{ color: "rgba(0,212,255,0.6)" }}
+        >
+          <Terminal className="w-4 h-4" style={{ color: "#00d4ff" }} />
+          <span style={{ color: "#00ff88" }}>$</span>
           <span>curl -X POST https://api.piyushmodgil.dev/v1/contact</span>
-        </div>
+        </motion.div>
 
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-start">
-          
-          {/* Form Area (The Request) */}
+
+          {/* Form */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            viewport={{ once: true, margin: "-100px" }}
-            className="lg:col-span-6 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl overflow-hidden shadow-lg"
+            viewport={{ once: true }}
+            transition={{ duration: 0.5 }}
+            className="lg:col-span-7 rounded-xl overflow-hidden"
+            style={{
+              background: "rgba(4, 10, 24, 0.85)",
+              border: "1px solid rgba(0,212,255,0.12)",
+            }}
           >
-            <div className="bg-slate-50 dark:bg-slate-950 px-6 py-4 border-b border-slate-200 dark:border-slate-800 flex justify-between items-center">
-              <h3 className="font-mono font-bold text-slate-800 dark:text-slate-200 text-sm">Request Payload</h3>
-              <div className="flex items-center space-x-2 text-[10px] font-mono text-slate-500 uppercase tracking-wider">
-                <ShieldCheck className="w-3 h-3 text-[var(--term-green)]" />
-                <span>TLS v1.3 Secured</span>
+            {/* Form header */}
+            <div
+              className="flex justify-between items-center px-6 py-4"
+              style={{
+                background: "rgba(2, 6, 18, 0.8)",
+                borderBottom: "1px solid rgba(0,212,255,0.08)",
+              }}
+            >
+              <span className="font-mono font-bold text-sm" style={{ color: "#e2e8f0" }}>
+                POST /v1/contact — Request Body
+              </span>
+              <div className="flex items-center gap-2 text-xs font-mono" style={{ color: "#00ff88" }}>
+                <ShieldCheck className="w-3.5 h-3.5" />
+                TLS 1.3
               </div>
             </div>
 
-            <form onSubmit={handleSubmit} className="p-6 space-y-6 font-mono text-sm">
-              <div className="space-y-2">
-                <label className="text-slate-500 dark:text-slate-400">
-                  <span className="text-[var(--tf-purple)]">const</span> <span className="text-[var(--sky-blue)]">name</span>: <span className="text-[var(--aws-amber)]">string</span> =
+            <form onSubmit={handleSubmit} className="p-6 space-y-5 font-mono text-sm">
+              {/* Name field */}
+              <div className="space-y-1.5">
+                <label className="text-xs" style={{ color: "rgba(148,163,184,0.6)" }}>
+                  <span style={{ color: "#7c3aed" }}>const </span>
+                  <span style={{ color: "#00d4ff" }}>name</span>
+                  <span style={{ color: "#94a3b8" }}>: </span>
+                  <span style={{ color: "#f59e0b" }}>string</span>
+                  <span style={{ color: "#94a3b8" }}> =</span>
                 </label>
                 <input
                   type="text"
                   name="name"
                   value={formData.name}
                   onChange={handleChange}
-                  required
-                  className="w-full bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 rounded px-4 py-3 text-slate-800 dark:text-slate-200 focus:outline-none focus:border-[var(--sky-blue)] focus:ring-1 focus:ring-[var(--sky-blue)] transition-all"
-                  placeholder='"Enter your name"'
+                  placeholder='"Your name"'
+                  className="w-full rounded-lg px-4 py-3 text-sm font-mono outline-none transition-all duration-200"
+                  style={{
+                    background: "rgba(0,0,0,0.4)",
+                    border: `1px solid ${errors.name ? "rgba(239,68,68,0.5)" : "rgba(0,212,255,0.12)"}`,
+                    color: "#e2e8f0",
+                  }}
+                  onFocus={(e) => {
+                    if (!errors.name) {
+                      e.target.style.borderColor = "rgba(0,212,255,0.5)"
+                      e.target.style.boxShadow = "0 0 0 2px rgba(0,212,255,0.08)"
+                    }
+                  }}
+                  onBlur={(e) => {
+                    if (!errors.name) {
+                      e.target.style.borderColor = "rgba(0,212,255,0.12)"
+                      e.target.style.boxShadow = "none"
+                    }
+                  }}
                 />
+                {errors.name && (
+                  <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} className="text-xs" style={{ color: "#f87171" }}>
+                    // {errors.name}
+                  </motion.p>
+                )}
               </div>
 
-              <div className="space-y-2">
-                <label className="text-slate-500 dark:text-slate-400">
-                  <span className="text-[var(--tf-purple)]">const</span> <span className="text-[var(--sky-blue)]">email</span>: <span className="text-[var(--aws-amber)]">string</span> =
+              {/* Email field */}
+              <div className="space-y-1.5">
+                <label className="text-xs" style={{ color: "rgba(148,163,184,0.6)" }}>
+                  <span style={{ color: "#7c3aed" }}>const </span>
+                  <span style={{ color: "#00d4ff" }}>email</span>
+                  <span style={{ color: "#94a3b8" }}>: </span>
+                  <span style={{ color: "#f59e0b" }}>string</span>
+                  <span style={{ color: "#94a3b8" }}> =</span>
                 </label>
                 <input
                   type="email"
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  required
-                  className="w-full bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 rounded px-4 py-3 text-slate-800 dark:text-slate-200 focus:outline-none focus:border-[var(--sky-blue)] focus:ring-1 focus:ring-[var(--sky-blue)] transition-all"
-                  placeholder='"Enter your email"'
+                  placeholder='"your@email.com"'
+                  className="w-full rounded-lg px-4 py-3 text-sm font-mono outline-none transition-all duration-200"
+                  style={{
+                    background: "rgba(0,0,0,0.4)",
+                    border: `1px solid ${errors.email ? "rgba(239,68,68,0.5)" : "rgba(0,212,255,0.12)"}`,
+                    color: "#e2e8f0",
+                  }}
+                  onFocus={(e) => {
+                    if (!errors.email) {
+                      e.target.style.borderColor = "rgba(0,212,255,0.5)"
+                      e.target.style.boxShadow = "0 0 0 2px rgba(0,212,255,0.08)"
+                    }
+                  }}
+                  onBlur={(e) => {
+                    if (!errors.email) {
+                      e.target.style.borderColor = "rgba(0,212,255,0.12)"
+                      e.target.style.boxShadow = "none"
+                    }
+                  }}
                 />
+                {errors.email && (
+                  <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} className="text-xs" style={{ color: "#f87171" }}>
+                    // {errors.email}
+                  </motion.p>
+                )}
               </div>
 
-              <div className="space-y-2">
-                <label className="text-slate-500 dark:text-slate-400">
-                  <span className="text-[var(--tf-purple)]">const</span> <span className="text-[var(--sky-blue)]">message</span>: <span className="text-[var(--aws-amber)]">string</span> =
+              {/* Message field */}
+              <div className="space-y-1.5">
+                <label className="text-xs" style={{ color: "rgba(148,163,184,0.6)" }}>
+                  <span style={{ color: "#7c3aed" }}>const </span>
+                  <span style={{ color: "#00d4ff" }}>message</span>
+                  <span style={{ color: "#94a3b8" }}>: </span>
+                  <span style={{ color: "#f59e0b" }}>string</span>
+                  <span style={{ color: "#94a3b8" }}> =</span>
                 </label>
                 <textarea
                   name="message"
                   value={formData.message}
                   onChange={handleChange}
-                  required
                   rows={4}
-                  className="w-full bg-slate-50 dark:bg-slate-950/50 border border-slate-200 dark:border-slate-800 rounded px-4 py-3 text-slate-800 dark:text-slate-200 focus:outline-none focus:border-[var(--sky-blue)] focus:ring-1 focus:ring-[var(--sky-blue)] transition-all resize-none"
-                  placeholder='"Type your message here..."'
+                  placeholder='"Your message..."'
+                  className="w-full rounded-lg px-4 py-3 text-sm font-mono outline-none transition-all duration-200 resize-none"
+                  style={{
+                    background: "rgba(0,0,0,0.4)",
+                    border: `1px solid ${errors.message ? "rgba(239,68,68,0.5)" : "rgba(0,212,255,0.12)"}`,
+                    color: "#e2e8f0",
+                  }}
+                  onFocus={(e) => {
+                    if (!errors.message) {
+                      e.target.style.borderColor = "rgba(0,212,255,0.5)"
+                      e.target.style.boxShadow = "0 0 0 2px rgba(0,212,255,0.08)"
+                    }
+                  }}
+                  onBlur={(e) => {
+                    if (!errors.message) {
+                      e.target.style.borderColor = "rgba(0,212,255,0.12)"
+                      e.target.style.boxShadow = "none"
+                    }
+                  }}
                 />
+                {errors.message && (
+                  <motion.p initial={{ opacity: 0, y: -4 }} animate={{ opacity: 1, y: 0 }} className="text-xs" style={{ color: "#f87171" }}>
+                    // {errors.message}
+                  </motion.p>
+                )}
               </div>
 
-              <button
+              {/* Error banner */}
+              {submitStatus === "error" && errorMsg && (
+                <motion.div
+                  initial={{ opacity: 0, y: -4 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  className="flex items-center gap-2 px-4 py-3 rounded-lg text-xs font-mono"
+                  style={{
+                    background: "rgba(239,68,68,0.08)",
+                    border: "1px solid rgba(239,68,68,0.3)",
+                    color: "#f87171",
+                  }}
+                >
+                  <span style={{ color: "#ef4444" }}>✗</span>
+                  {errorMsg}
+                </motion.div>
+              )}
+
+              {/* Submit button */}
+              <motion.button
                 type="submit"
-                disabled={isSubmitting}
-                className="w-full flex items-center justify-center space-x-2 bg-slate-800 hover:bg-slate-700 dark:bg-[var(--sky-blue)] dark:hover:bg-sky-400 text-white dark:text-slate-950 font-bold py-3 px-4 rounded transition-colors disabled:opacity-70 disabled:cursor-not-allowed"
+                disabled={isSubmitting || submitStatus === "success"}
+                whileHover={{ scale: isSubmitting || submitStatus === "success" ? 1 : 1.01 }}
+                whileTap={{ scale: 0.99 }}
+                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-lg font-mono font-bold text-sm transition-all duration-300 disabled:cursor-not-allowed"
+                style={
+                  submitStatus === "success"
+                    ? {
+                        background: "rgba(0,255,136,0.12)",
+                        border: "1px solid rgba(0,255,136,0.4)",
+                        color: "#00ff88",
+                        boxShadow: "0 0 20px rgba(0,255,136,0.15)",
+                      }
+                    : submitStatus === "error"
+                    ? {
+                        background: "rgba(239,68,68,0.08)",
+                        border: "1px solid rgba(239,68,68,0.35)",
+                        color: "#f87171",
+                      }
+                    : {
+                        background: "rgba(0,212,255,0.1)",
+                        border: "1px solid rgba(0,212,255,0.4)",
+                        color: "#00d4ff",
+                        opacity: isSubmitting ? 0.7 : 1,
+                      }
+                }
+                onMouseEnter={(e) => {
+                  if (!isSubmitting && submitStatus === "idle") {
+                    e.currentTarget.style.background = "rgba(0,212,255,0.18)"
+                    e.currentTarget.style.boxShadow = "0 0 25px rgba(0,212,255,0.25)"
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isSubmitting && submitStatus === "idle") {
+                    e.currentTarget.style.background = "rgba(0,212,255,0.1)"
+                    e.currentTarget.style.boxShadow = "none"
+                  }
+                }}
               >
                 {isSubmitting ? (
                   <>
                     <Loader2 className="w-4 h-4 animate-spin" />
-                    <span>Executing Request...</span>
+                    Sending request...
                   </>
                 ) : submitStatus === "success" ? (
                   <>
                     <ShieldCheck className="w-4 h-4" />
-                    <span>200 OK - Message Sent</span>
+                    200 OK — Message Sent!
                   </>
                 ) : submitStatus === "error" ? (
                   <>
-                    <Activity className="w-4 h-4" />
-                    <span>500 ERROR - Retry</span>
+                    <Send className="w-4 h-4" />
+                    Retry
                   </>
                 ) : (
                   <>
                     <Send className="w-4 h-4" />
-                    <span>POST /contact</span>
+                    POST /contact
                   </>
                 )}
-              </button>
+              </motion.button>
             </form>
           </motion.div>
 
-          {/* Live Data Preview (The Server Side) */}
+          {/* Right panel */}
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5, delay: 0.2, ease: "easeOut" }}
-            viewport={{ once: true, margin: "-100px" }}
-            className="lg:col-span-6 flex flex-col space-y-6"
+            viewport={{ once: true }}
+            transition={{ duration: 0.5, delay: 0.15 }}
+            className="lg:col-span-5 flex flex-col gap-5"
           >
-            {/* JSON Output Viewer */}
-            <div className="bg-[#1e1e1e] rounded-xl overflow-hidden border border-slate-800 shadow-2xl h-full">
-              <div className="flex items-center justify-between px-4 py-2 bg-[#2d2d2d] border-b border-[#1e1e1e]">
-                <div className="flex space-x-2">
-                  <Server className="w-4 h-4 text-slate-400" />
-                  <span className="text-[#858585] text-xs font-mono">server.log</span>
-                </div>
-                <div className="flex items-center space-x-2">
-                  <span className="relative flex h-2 w-2">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--term-green)] opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--term-green)]"></span>
+            {/* Server log */}
+            <div
+              className="rounded-xl overflow-hidden"
+              style={{
+                background: "#020c1b",
+                border: "1px solid rgba(0,212,255,0.1)",
+              }}
+            >
+              <div
+                className="flex items-center justify-between px-4 py-2.5"
+                style={{ background: "rgba(2,6,18,0.9)", borderBottom: "1px solid rgba(0,212,255,0.06)" }}
+              >
+                <div className="flex items-center gap-2">
+                  <Server className="w-3.5 h-3.5" style={{ color: "rgba(0,212,255,0.5)" }} />
+                  <span className="font-mono text-xs" style={{ color: "rgba(0,212,255,0.5)" }}>
+                    server.log
                   </span>
-                  <span className="text-[#858585] text-[10px] font-mono">LISTENING: PORT 443</span>
+                </div>
+                <div className="flex items-center gap-1.5 font-mono text-xs" style={{ color: "#00ff88" }}>
+                  <span className="w-1.5 h-1.5 rounded-full bg-green-400 inline-block pulse-dot" />
+                  LISTENING :443
                 </div>
               </div>
-              
-              <div className="p-6 overflow-x-auto text-sm font-mono leading-relaxed text-slate-300">
-                <div className="text-slate-500 mb-4">
-                  {`// Awaiting incoming POST request...`}
+              <div className="p-5 font-mono text-xs leading-relaxed" style={{ color: "#64748b" }}>
+                <div className="mb-3">
+                  <span style={{ color: "rgba(0,212,255,0.3)" }}>{"// Awaiting POST /v1/contact..."}</span>
                   <br />
-                  {`// Parsing application/json payload`}
+                  <span style={{ color: "rgba(0,212,255,0.3)" }}>{"// Content-Type: application/json"}</span>
                 </div>
-                <pre>
-                  <code className="language-json">
-                    <span className="text-[#d4d4d4]">{`{`}</span>{"\n"}
-                    <span className="text-[#9cdcfe]">  "headers"</span><span className="text-[#d4d4d4]">: {`{`}</span>{"\n"}
-                    <span className="text-[#ce9178]">    "Content-Type"</span><span className="text-[#d4d4d4]">: </span><span className="text-[#ce9178]">"application/json"</span><span className="text-[#d4d4d4]">,</span>{"\n"}
-                    <span className="text-[#ce9178]">    "Authorization"</span><span className="text-[#d4d4d4]">: </span><span className="text-[#ce9178]">"Bearer **********"</span>{"\n"}
-                    <span className="text-[#d4d4d4]">  {`},`}</span>{"\n"}
-                    <span className="text-[#9cdcfe]">  "body"</span><span className="text-[#d4d4d4]">: {`{`}</span>{"\n"}
-                    <span className="text-[#ce9178]">    "name"</span><span className="text-[#d4d4d4]">: </span><span className="text-[#ce9178]">"{formData.name || ""}"</span><span className="text-[#d4d4d4]">,</span>{"\n"}
-                    <span className="text-[#ce9178]">    "email"</span><span className="text-[#d4d4d4]">: </span><span className="text-[#ce9178]">"{formData.email || ""}"</span><span className="text-[#d4d4d4]">,</span>{"\n"}
-                    <span className="text-[#ce9178]">    "message"</span><span className="text-[#d4d4d4]">: </span><span className="text-[#ce9178]">"{formData.message ? formData.message.substring(0, 30) + (formData.message.length > 30 ? '...' : '') : ""}"</span>{"\n"}
-                    <span className="text-[#d4d4d4]">  {`}`}</span>{"\n"}
-                    <span className="text-[#d4d4d4]">{`}`}</span>
+                <pre className="text-xs">
+                  <code>
+                    <span style={{ color: "#4ec9b0" }}>{`{`}</span>{"\n"}
+                    <span style={{ color: "#9cdcfe" }}>  &quot;headers&quot;</span>
+                    <span style={{ color: "#d4d4d4" }}>: {`{`}</span>{"\n"}
+                    <span style={{ color: "#ce9178" }}>    &quot;Auth&quot;</span>
+                    <span style={{ color: "#d4d4d4" }}>: </span>
+                    <span style={{ color: "#ce9178" }}>&quot;Bearer ***&quot;</span>{"\n"}
+                    <span style={{ color: "#d4d4d4" }}>  {`},`}</span>{"\n"}
+                    <span style={{ color: "#9cdcfe" }}>  &quot;body&quot;</span>
+                    <span style={{ color: "#d4d4d4" }}>: {`{`}</span>{"\n"}
+                    <span style={{ color: "#ce9178" }}>    &quot;name&quot;</span>
+                    <span style={{ color: "#d4d4d4" }}>: </span>
+                    <span style={{ color: "#ce9178" }}>&quot;{formData.name || "..."}&quot;</span>{"\n"}
+                    <span style={{ color: "#ce9178" }}>    &quot;email&quot;</span>
+                    <span style={{ color: "#d4d4d4" }}>: </span>
+                    <span style={{ color: "#ce9178" }}>&quot;{formData.email || "..."}&quot;</span>{"\n"}
+                    <span style={{ color: "#d4d4d4" }}>  {`}`}</span>{"\n"}
+                    <span style={{ color: "#4ec9b0" }}>{`}`}</span>
                   </code>
                 </pre>
-                
                 {submitStatus === "success" && (
-                  <motion.div 
-                    initial={{ opacity: 0, y: 10 }}
+                  <motion.div
+                    initial={{ opacity: 0, y: 5 }}
                     animate={{ opacity: 1, y: 0 }}
-                    className="mt-6 text-[var(--term-green)] border-t border-slate-800 pt-4"
+                    className="mt-4 pt-4"
+                    style={{ borderTop: "1px solid rgba(0,212,255,0.08)", color: "#00ff88" }}
                   >
-                    {`> STATUS: 200 OK`}
+                    {"> STATUS: 200 OK"}
                     <br />
-                    {`> MESSAGE: "Connection established. I'll get back to you shortly."`}
+                    {"> Connection established. I'll reply shortly."}
                   </motion.div>
                 )}
               </div>
+            </div>
+
+            {/* Quick links */}
+            <div
+              className="rounded-xl p-5 space-y-3"
+              style={{
+                background: "rgba(4, 10, 24, 0.8)",
+                border: "1px solid rgba(0,212,255,0.1)",
+              }}
+            >
+              <h4 className="font-mono text-xs font-bold uppercase tracking-wider mb-4" style={{ color: "rgba(0,212,255,0.5)" }}>
+                Direct Channels
+              </h4>
+              {[
+                { icon: Mail, label: "piyushmodgil9@gmail.com", href: "mailto:piyushmodgil9@gmail.com", color: "#f59e0b" },
+                { icon: Linkedin, label: "linkedin.com/in/piyushmodgil", href: "https://linkedin.com/in/piyushmodgil", color: "#00d4ff" },
+                { icon: Github, label: "github.com/pm21f", href: "https://github.com/pm21f", color: "#7c3aed" },
+                { icon: MapPin, label: "Una, HP, India", href: "#", color: "#00ff88" },
+              ].map((item) => {
+                const Icon = item.icon
+                return (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    target={item.href.startsWith("http") ? "_blank" : undefined}
+                    rel={item.href.startsWith("http") ? "noopener noreferrer" : undefined}
+                    className="flex items-center gap-3 text-sm font-mono transition-all duration-200 group"
+                    style={{ color: "rgba(148,163,184,0.6)" }}
+                    onMouseEnter={(e) => { e.currentTarget.style.color = item.color }}
+                    onMouseLeave={(e) => { e.currentTarget.style.color = "rgba(148,163,184,0.6)" }}
+                  >
+                    <div
+                      className="p-1.5 rounded-md transition-all duration-200"
+                      style={{ background: `${item.color}10`, border: `1px solid ${item.color}20` }}
+                    >
+                      <Icon className="w-3.5 h-3.5" style={{ color: item.color }} />
+                    </div>
+                    <span className="text-xs truncate">{item.label}</span>
+                  </a>
+                )
+              })}
             </div>
           </motion.div>
         </div>
