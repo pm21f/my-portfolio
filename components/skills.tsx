@@ -5,27 +5,27 @@ import { motion } from "framer-motion"
 const categories = [
   {
     id: "cloud",
-    title: "Cloud & Infra",
+    title: "Cloud & Infrastructure",
     color: "#f59e0b",
-    skills: ["AWS EC2", "Lambda", "S3", "VPC", "IAM", "CloudWatch", "EKS", "Route 53"],
+    skills: ["AWS EC2", "AWS Lambda", "S3", "VPC", "IAM", "EKS", "Route 53", "CloudFront", "Auto Scaling", "Load Balancing"],
   },
   {
-    id: "iac",
-    title: "IaC & CI/CD",
-    color: "#7c3aed",
-    skills: ["Terraform", "Docker", "Kubernetes", "Helm", "GitHub Actions", "Jenkins", "Ansible"],
-  },
-  {
-    id: "backend",
-    title: "Backend & APIs",
-    color: "#00ff88",
-    skills: ["Go (Gin/Echo)", "Python", "Django", "REST", "gRPC", "WebSockets", "Microservices"],
-  },
-  {
-    id: "data",
-    title: "Databases",
+    id: "containers",
+    title: "Containers & Orchestration",
     color: "#00d4ff",
-    skills: ["PostgreSQL", "DynamoDB", "Redis", "AWS S3", "MongoDB", "SQL"],
+    skills: ["Docker", "Kubernetes", "Helm", "Docker Compose", "Container Registry", "Pod Autoscaling", "Ingress", "Service Mesh"],
+  },
+  {
+    id: "cicd",
+    title: "CI/CD & IaC",
+    color: "#7c3aed",
+    skills: ["Jenkins", "GitHub Actions", "Terraform", "Ansible", "ArgoCD", "GitOps", "Packer", "Vault"],
+  },
+  {
+    id: "observability",
+    title: "Observability & Messaging",
+    color: "#00ff88",
+    skills: ["Prometheus", "Grafana", "Kafka", "ELK Stack", "CloudWatch", "Alertmanager", "Loki", "Linux Server Admin"],
   },
 ]
 
@@ -66,7 +66,7 @@ export default function Skills() {
             Tech<span className="text-gradient-cyan"> Stack</span>
           </h2>
           <p className="text-sm font-mono max-w-md" style={{ color: "#4a5568" }}>
-            Tools and technologies I use to build, deploy, and maintain production infrastructure.
+            Tools and technologies I use to provision, orchestrate, monitor, and automate production infrastructure.
           </p>
         </motion.div>
 
@@ -140,8 +140,8 @@ export default function Skills() {
             transition={{ repeat: Infinity, duration: 22, ease: "linear" }}
             className="flex gap-10 whitespace-nowrap"
           >
-            {["AWS", "Kubernetes", "Terraform", "Docker", "Go", "Python", "PostgreSQL", "Redis", "Linux", "CI/CD",
-              "AWS", "Kubernetes", "Terraform", "Docker", "Go", "Python", "PostgreSQL", "Redis", "Linux", "CI/CD"].map((t, i) => (
+            {["AWS", "Kubernetes", "Terraform", "Docker", "Jenkins", "Prometheus", "Grafana", "Kafka", "Helm", "ArgoCD", "Linux", "CI/CD",
+              "AWS", "Kubernetes", "Terraform", "Docker", "Jenkins", "Prometheus", "Grafana", "Kafka", "Helm", "ArgoCD", "Linux", "CI/CD"].map((t, i) => (
               <span key={i} className="font-mono font-bold text-sm" style={{ color: "rgba(0,212,255,0.12)" }}>
                 {t}
               </span>
