@@ -29,8 +29,8 @@ export function Projects() {
 
         <div className="mb-14 mt-6 flex flex-wrap items-center gap-4">
           <p className="max-w-xl font-mono text-body-sm leading-relaxed text-ink-muted text-pretty">
-            Each one opens into the problem it solved, how it was put together, and what
-            came out the other side.
+            What each system runs on, and the numbers it moved. Select a technology above
+            to narrow this list to where I used it.
           </p>
 
           {filter ? (

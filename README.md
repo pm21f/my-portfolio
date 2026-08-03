@@ -101,9 +101,15 @@ metric or job title.
    `resume --download` and the contact link both point at `site.resume`.
    **This file is not in the repo yet — add it, or both links 404.**
 
-5. **Draft flags** — any project with `needsReview: true` shows a visible
-   "draft copy" badge in the UI. Remove the flag once you've replaced the
-   drafted prose.
+5. **Draft flags gate publication.** While a project has `needsReview: true`,
+   its card renders only your own material — summary, stack, outcome metrics —
+   and the deep case study (problem, architecture diagram, and the button that
+   opens them) does not render at all. Drafted prose is never published.
+
+   Rewrite `problem` and `architecture` in your own words, delete the flag, and
+   the case study appears by itself. In `pnpm dev` a project still carrying the
+   flag shows an amber "case study hidden — draft" marker; that marker is
+   development-only and never reaches visitors.
 
 ---
 

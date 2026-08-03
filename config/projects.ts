@@ -5,9 +5,16 @@
  * │ STATUS: the four projects, their stacks and their OUTCOME METRICS are   │
  * │ yours, carried over from the previous site. The `problem` and           │
  * │ `architecture` fields are DRAFTED — a plausible reconstruction from the │
- * │ stack, not something you told me. Anything still drafted is flagged     │
- * │ `needsReview: true` and renders a small "draft" marker in the UI so it  │
- * │ can't ship unnoticed. Replace the prose, then delete the flag.          │
+ * │ stack, not something you told me.                                       │
+ * │                                                                         │
+ * │ `needsReview: true` GATES PUBLICATION. While it is set, the card shows  │
+ * │ only your own material (summary, stack, outcome metrics) and the deep   │
+ * │ case study — problem, architecture diagram, and the control that opens  │
+ * │ them — does not render at all. Drafted prose is never published under   │
+ * │ your name.                                                              │
+ * │                                                                         │
+ * │ Rewrite the two fields in your own words, delete the flag, and the       │
+ * │ case study appears on its own. Nothing else needs changing.             │
  * └─────────────────────────────────────────────────────────────────────────┘
  *
  * The architecture graph is data, not a picture: `nodes` + `edges` are laid out

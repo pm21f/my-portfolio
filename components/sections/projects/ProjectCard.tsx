@@ -37,6 +37,22 @@ export function ProjectCard({
 
   const panelId = `case-study-${project.slug}`
 
+  /**
+   * Whether the deep case study is published.
+   *
+   * `needsReview` means the `problem` and `architecture` prose is a
+   * reconstruction from the stack rather than the author's own account. That
+   * copy stays in config but does NOT render: publishing an invented
+   * description of how someone built a system, under their name, is not a
+   * placeholder — it's a claim they'd have to defend in an interview.
+   *
+   * The card still carries everything that IS theirs — summary, stack and the
+   * real outcome metrics — so nothing of substance is lost. Delete the flag in
+   * config/projects.ts once the real detail is written and the case study,
+   * diagram and expand control all light up on their own.
+   */
+  const caseStudyReady = !project.needsReview
+
   const onPointerMove = (event: React.PointerEvent<HTMLDivElement>) => {
     // Tilting a card that's currently reading as a document would make the text
     // wobble under the cursor.
@@ -122,20 +138,35 @@ export function ProjectCard({
             ))}
           </dl>
 
+          {/* Stack sits on the card itself, not behind the expand control —
+              it's the author's own data and shouldn't be gated on prose. */}
+          <ul className="mb-6 flex flex-wrap gap-2">
+            {project.stack.map((item) => (
+              <li
+                key={item}
+                className="rounded border border-line-subtle px-2.5 py-1 font-mono text-label-xs text-ink-muted"
+              >
+                {item}
+              </li>
+            ))}
+          </ul>
+
           <div className="flex flex-wrap items-center gap-4">
-            <button
-              type="button"
-              onClick={() => {
-                play('click')
-                setTilt({ x: 0, y: 0 })
-                onToggle()
-              }}
-              aria-expanded={expanded}
-              aria-controls={panelId}
-              className="rounded-md border border-line px-4 py-2 font-mono text-label-sm uppercase text-ink-secondary transition-all duration-fast hover:border-accent hover:text-accent"
-            >
-              {expanded ? 'collapse case study' : 'read case study'}
-            </button>
+            {caseStudyReady ? (
+              <button
+                type="button"
+                onClick={() => {
+                  play('click')
+                  setTilt({ x: 0, y: 0 })
+                  onToggle()
+                }}
+                aria-expanded={expanded}
+                aria-controls={panelId}
+                className="rounded-md border border-line px-4 py-2 font-mono text-label-sm uppercase text-ink-secondary transition-all duration-fast hover:border-accent hover:text-accent"
+              >
+                {expanded ? 'collapse case study' : 'read case study'}
+              </button>
+            ) : null}
 
             {project.links.source ? (
               <a
@@ -150,51 +181,42 @@ export function ProjectCard({
               </a>
             ) : null}
 
-            {project.needsReview ? (
-              // Visible on purpose. Draft prose should be obvious to whoever
-              // owns the site, not buried in a code comment.
+            {project.needsReview && process.env.NODE_ENV === 'development' ? (
+              // Development only. The reminder is for whoever owns the site;
+              // a visitor should never see scaffolding language on a portfolio.
               <span
                 className="rounded border border-dashed px-2 py-0.5 font-mono text-label-xs uppercase"
                 style={{ borderColor: 'var(--signal-warn)', color: 'var(--signal-warn)' }}
-                title="The problem statement and architecture on this card are drafted and need your review."
+                title="Case study hidden: problem and architecture prose is drafted. Write it, then remove needsReview in config/projects.ts."
               >
-                draft copy
+                case study hidden — draft
               </span>
             ) : null}
           </div>
         </div>
 
         {/*
-          The case study stays MOUNTED when collapsed, hidden with the `hidden`
-          attribute. That keeps every word in the server-rendered HTML — the
-          case studies are the most substantial content on this site and
-          conditionally rendering them would hide them from crawlers entirely.
+          Once published, the case study stays MOUNTED when collapsed, hidden
+          with the `hidden` attribute rather than conditionally rendered. That
+          keeps every word in the server-rendered HTML — these are the most
+          substantial pages on the site and unmounting them would hide them
+          from crawlers entirely.
         */}
-        <div
-          id={panelId}
-          hidden={!expanded}
-          className="border-t border-line-subtle px-6 pb-8 pt-6 lg:px-8"
-        >
-          <h4 className="mb-2 font-mono text-label-md uppercase text-accent">The problem</h4>
-          <p className="mb-6 max-w-2xl font-mono text-body-sm leading-relaxed text-ink-secondary text-pretty">
-            {project.problem}
-          </p>
+        {caseStudyReady ? (
+          <div
+            id={panelId}
+            hidden={!expanded}
+            className="border-t border-line-subtle px-6 pb-8 pt-6 lg:px-8"
+          >
+            <h4 className="mb-2 font-mono text-label-md uppercase text-accent">The problem</h4>
+            <p className="mb-6 max-w-2xl font-mono text-body-sm leading-relaxed text-ink-secondary text-pretty">
+              {project.problem}
+            </p>
 
-          <h4 className="mb-2 font-mono text-label-md uppercase text-accent">Architecture</h4>
-          <ArchitectureDiagram project={project} />
-
-          <h4 className="mb-3 mt-6 font-mono text-label-md uppercase text-accent">Stack</h4>
-          <ul className="flex flex-wrap gap-2">
-            {project.stack.map((item) => (
-              <li
-                key={item}
-                className="rounded border border-line-subtle px-2.5 py-1 font-mono text-label-xs text-ink-muted"
-              >
-                {item}
-              </li>
-            ))}
-          </ul>
-        </div>
+            <h4 className="mb-2 font-mono text-label-md uppercase text-accent">Architecture</h4>
+            <ArchitectureDiagram project={project} />
+          </div>
+        ) : null}
       </div>
     </li>
   )
