@@ -1,39 +1,79 @@
-import Hero         from "@/components/hero"
-import About        from "@/components/about"
-import Experience   from "@/components/experience"
-import Skills       from "@/components/skills"
-import Projects     from "@/components/projects"
-import Achievements from "@/components/achievements"
-import Contact      from "@/components/contact"
-import NetworkBackground from "@/components/network-background"
+import Hero from '@/components/sections/hero'
+import Pipeline from '@/components/sections/pipeline'
+import Cluster from '@/components/sections/cluster'
+import Skills from '@/components/sections/skills'
+import Experience from '@/components/sections/experience'
+import Projects from '@/components/sections/projects'
+import Observability from '@/components/sections/observability'
+import Contact from '@/components/sections/contact'
+import { site } from '@/config/site'
+import { experience } from '@/config/experience'
+import { skills } from '@/config/skills'
+
+/**
+ * Structured data.
+ *
+ * Built from the same config the page renders, so it can't drift out of sync
+ * with what a visitor actually sees — which is both a maintenance win and the
+ * thing search engines penalise when it isn't true.
+ */
+function personJsonLd() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: site.name,
+    jobTitle: site.role,
+    description: site.description,
+    email: `mailto:${site.email}`,
+    url: site.url,
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Una',
+      addressRegion: 'Himachal Pradesh',
+      addressCountry: 'IN',
+    },
+    worksFor: { '@type': 'Organization', name: site.company },
+    alumniOf: experience
+      .filter((role) => role.company !== site.company)
+      .map((role) => ({ '@type': 'Organization', name: role.company })),
+    knowsAbout: skills.map((skill) => skill.label),
+    sameAs: site.socials
+      .filter((social) => !social.href.startsWith('mailto:'))
+      .map((social) => social.href),
+  }
+}
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen" style={{ background: "#020817" }}>
-      {/* fixed layers */}
-      <div className="fixed inset-0 z-0 grid-overlay pointer-events-none" />
-      <NetworkBackground />
+    <>
+      <script
+        type="application/ld+json"
+        // Content is derived from local config, never user input.
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(personJsonLd()) }}
+      />
 
-      {/* content */}
-      <div className="relative z-10">
+      <main id="main" className="relative">
         <Hero />
-        <About />
-        <Experience />
+        <Pipeline />
+        <Cluster />
         <Skills />
+        <Experience />
         <Projects />
-        <Achievements />
+        <Observability />
         <Contact />
-      </div>
+      </main>
 
-      {/* footer */}
-      <footer
-        className="relative z-10 py-10 text-center font-mono text-xs"
-        style={{ borderTop: "1px solid rgba(0,212,255,0.07)", color: "#334155" }}
-      >
-        <span style={{ color: "#00ff88" }}>piyush@nogiz</span>
-        <span style={{ color: "#1e293b" }}>:~$</span>
-        <span className="ml-2">echo &quot;© 2026 Piyush Modgil · Built with Next.js · Deployed on Vercel&quot;</span>
+      <footer className="border-t border-line-subtle px-6 py-10 lg:px-24">
+        <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-4">
+          <p className="font-mono text-label-xs uppercase text-ink-faint">
+            © {new Date().getFullYear()} {site.name} — built with Next.js, three.js and
+            far too much coffee
+          </p>
+          <p className="font-mono text-label-xs uppercase text-ink-faint">
+            Deployed on Vercel
+          </p>
+        </div>
       </footer>
-    </main>
+    </>
   )
 }

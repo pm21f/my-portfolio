@@ -16,8 +16,10 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
+  // Type errors fail the build. The v0 scaffold shipped with this set to
+  // `true`, which means every type error in the tree has been invisible.
   typescript: {
-    ignoreBuildErrors: true,
+    ignoreBuildErrors: false,
   },
   images: {
     unoptimized: true,
