@@ -2,241 +2,207 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ─── Google Font ─── */
-@import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,300;0,400;0,500;0,600;0,700;0,800;1,400&display=swap');
+/*
+ * Fonts are loaded by next/font in app/layout.tsx (self-hosted, preloaded,
+ * zero render-blocking round-trips). Do NOT add an @import url() here — it
+ * reintroduces a blocking request and costs ~300ms of LCP.
+ *
+ * Every value below mirrors lib/tokens.ts. If you change a colour, change it
+ * there first — Tailwind and the three.js materials both read from that file.
+ */
 
-/* ─── Root vars ─── */
 :root {
-  --c-bg:       #020817;
-  --c-surface:  #0a1628;
-  --c-border:   rgba(0,212,255,0.12);
-  --c-cyan:     #00d4ff;
-  --c-green:    #00ff88;
-  --c-purple:   #7c3aed;
-  --c-amber:    #f59e0b;
-  --c-text:     #e2e8f0;
-  --c-muted:    #4a5568;
+  /* ── surfaces ── */
+  --bg-void: #05070a;
+  --bg-base: #0a0e14;
+  --bg-raised: #111823;
+  --bg-glass: rgba(16, 24, 36, 0.55);
+  --bg-scrim: rgba(5, 7, 10, 0.72);
 
-  /* shadcn compat */
-  --background: 222 65% 3%;
-  --foreground: 210 40% 95%;
-  --card: 222 50% 6%;
-  --card-foreground: 210 40% 95%;
-  --border: 222 40% 13%;
-  --input: 222 40% 10%;
-  --ring: 195 100% 50%;
-  --radius: 0.75rem;
-  --primary: 195 100% 50%;
-  --primary-foreground: 222 65% 3%;
-  --secondary: 222 40% 12%;
-  --secondary-foreground: 210 40% 95%;
-  --muted: 222 40% 10%;
-  --muted-foreground: 215 20% 50%;
-  --accent: 222 40% 12%;
-  --accent-foreground: 210 40% 95%;
-  --destructive: 0 84% 60%;
-  --destructive-foreground: 210 40% 98%;
-  --popover: 222 50% 6%;
-  --popover-foreground: 210 40% 95%;
-}
+  /* ── the one accent ── */
+  --accent: #22d3ee;
+  --accent-hot: #67e8f9;
+  --accent-deep: #0e7490;
+  --accent-dim: rgba(34, 211, 238, 0.14);
+  --accent-glow: rgba(34, 211, 238, 0.45);
 
-/* ─── Base ─── */
-*, *::before, *::after { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
-body {
-  background: var(--c-bg);
-  color: var(--c-text);
-  font-family: 'JetBrains Mono', ui-monospace, monospace;
-  overflow-x: hidden;
-  -webkit-font-smoothing: antialiased;
-}
-* { border-color: var(--c-border); }
+  /* ── text ── */
+  --text-primary: #e6edf3;
+  --text-secondary: #93a4b8;
+  --text-muted: #4a5a6e;
+  --text-faint: #2a3542;
 
-/* ─── Scrollbar ─── */
-::-webkit-scrollbar { width: 3px; }
-::-webkit-scrollbar-track { background: var(--c-bg); }
-::-webkit-scrollbar-thumb { background: rgba(0,212,255,0.25); border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(0,212,255,0.6); }
+  /* ── lines ── */
+  --line-subtle: rgba(148, 163, 184, 0.08);
+  --line-default: rgba(34, 211, 238, 0.14);
+  --line-strong: rgba(34, 211, 238, 0.35);
 
-/* ─── Grid overlay ─── */
-.grid-overlay {
-  background-image:
-    linear-gradient(rgba(0,212,255,0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(0,212,255,0.025) 1px, transparent 1px);
-  background-size: 64px 64px;
-}
+  /* ── status semantics ONLY ── */
+  --signal-ok: #34d399;
+  --signal-warn: #fbbf24;
+  --signal-err: #f87171;
+  --signal-idle: #64748b;
 
-/* ─── Typography ─── */
-.display-text {
-  font-size: clamp(4rem, 12vw, 9rem);
-  font-weight: 800;
-  line-height: 0.95;
-  letter-spacing: -0.03em;
-}
-.display-text-sm {
-  font-size: clamp(2.5rem, 6vw, 5rem);
-  font-weight: 700;
-  line-height: 1;
-  letter-spacing: -0.025em;
+  /* ── motion ── */
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-dolly: cubic-bezier(0.33, 1, 0.68, 1);
+  --ease-snap: cubic-bezier(0.2, 0.9, 0.1, 1);
+
+  /* ── legacy shadcn scaffolding (components/ui/*) ── */
+  --background: 220 33% 3%;
+  --foreground: 210 26% 93%;
+  --card: 216 35% 10%;
+  --card-foreground: 210 26% 93%;
+  --border: 216 30% 16%;
+  --input: 216 30% 12%;
+  --ring: 187 82% 53%;
+  --radius: 0.875rem;
+  --primary: 187 82% 53%;
+  --primary-foreground: 220 33% 3%;
+  --secondary: 216 30% 14%;
+  --secondary-foreground: 210 26% 93%;
+  --muted: 216 30% 12%;
+  --muted-foreground: 213 18% 45%;
+  --accent-foreground: 210 26% 93%;
+  --destructive: 0 91% 71%;
+  --destructive-foreground: 210 26% 96%;
+  --popover: 216 35% 10%;
+  --popover-foreground: 210 26% 93%;
 }
 
-/* ─── Gradient text ─── */
-.text-gradient {
-  background: linear-gradient(135deg, #ffffff 0%, #00d4ff 45%, #00ff88 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.text-gradient-cyan {
-  background: linear-gradient(135deg, #00d4ff, #00ff88);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-.text-gradient-purple {
-  background: linear-gradient(135deg, #a78bfa, #00d4ff);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+@layer base {
+  * {
+    box-sizing: border-box;
+    border-color: var(--line-subtle);
+  }
+
+  /*
+   * No `scroll-behavior: smooth` — Lenis owns scrolling and the two fight,
+   * producing a stutter on anchor jumps. See lib/scroll.ts.
+   */
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+
+  body {
+    background: var(--bg-void);
+    color: var(--text-primary);
+    font-family: var(--font-mono), ui-monospace, monospace;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  ::selection {
+    background: var(--accent);
+    color: var(--bg-void);
+  }
+
+  /* Visible, on-brand focus ring. Never remove without a replacement. */
+  :focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  ::-webkit-scrollbar {
+    width: 3px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--bg-void);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--accent-deep);
+    border-radius: 2px;
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--accent);
+  }
 }
 
-/* ─── Glow utilities ─── */
-.glow-cyan  { box-shadow: 0 0 24px rgba(0,212,255,0.4), 0 0 60px rgba(0,212,255,0.1); }
-.glow-green { box-shadow: 0 0 24px rgba(0,255,136,0.4), 0 0 60px rgba(0,255,136,0.1); }
-.glow-purple{ box-shadow: 0 0 24px rgba(124,58,237,0.4),0 0 60px rgba(124,58,237,0.1); }
-.glow-amber { box-shadow: 0 0 24px rgba(245,158,11,0.4), 0 0 60px rgba(245,158,11,0.1); }
-.text-glow-cyan  { text-shadow: 0 0 20px rgba(0,212,255,0.9), 0 0 50px rgba(0,212,255,0.4); }
-.text-glow-green { text-shadow: 0 0 20px rgba(0,255,136,0.9), 0 0 50px rgba(0,255,136,0.4); }
+@layer components {
+  /* Monospace HUD label — uppercase, tracked out, always beside a rule. */
+  .label {
+    @apply font-mono text-label-md uppercase text-ink-muted;
+  }
 
-/* ─── Glass card ─── */
-.glass {
-  background: rgba(8,18,35,0.8);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(0,212,255,0.1);
-}
-.glass:hover {
-  border-color: rgba(0,212,255,0.35);
-}
-.glass-sm {
-  background: rgba(8,18,35,0.6);
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(0,212,255,0.08);
-}
+  /* Frosted surface floating over a canvas. */
+  .glass {
+    background: var(--bg-glass);
+    border: 1px solid var(--line-default);
+    backdrop-filter: blur(14px) saturate(140%);
+    -webkit-backdrop-filter: blur(14px) saturate(140%);
+  }
 
-/* ─── Gradient border ─── */
-.grad-border {
-  position: relative;
-  background: var(--c-bg);
-}
-.grad-border::before {
-  content: '';
-  position: absolute;
-  inset: -1px;
-  border-radius: inherit;
-  background: linear-gradient(135deg, rgba(0,212,255,0.5), rgba(124,58,237,0.5), rgba(0,255,136,0.5));
-  z-index: -1;
+  /* The single decorative gradient in the system — display type only. */
+  .text-accent-gradient {
+    background: linear-gradient(135deg, var(--text-primary) 0%, var(--accent) 70%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  /* Keyboard-only skip target. */
+  .skip-link:focus {
+    @apply fixed left-4 top-4 rounded-md bg-accent px-4 py-2 font-mono text-label-md font-semibold text-void;
+    z-index: 80;
+  }
 }
 
-/* ─── Section label ─── */
-.section-tag {
-  font-size: 0.65rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  color: rgba(0,212,255,0.55);
+@layer utilities {
+  /* Blueprint grid — sits behind everything, never over content. */
+  .grid-overlay {
+    background-image:
+      linear-gradient(var(--line-subtle) 1px, transparent 1px),
+      linear-gradient(90deg, var(--line-subtle) 1px, transparent 1px);
+    background-size: 64px 64px;
+    mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, #000 40%, transparent 100%);
+    -webkit-mask-image: radial-gradient(ellipse 90% 70% at 50% 40%, #000 40%, transparent 100%);
+  }
+
+  /*
+   * Film grain. An SVG feTurbulence data-URI so it costs no network request
+   * and stays crisp at any DPR. Very low opacity — it should register as
+   * texture, not noise.
+   */
+  .grain::after {
+    content: "";
+    position: fixed;
+    inset: -50%;
+    pointer-events: none;
+    z-index: 50;
+    opacity: 0.035;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  .text-balance {
+    text-wrap: balance;
+  }
+  .text-pretty {
+    text-wrap: pretty;
+  }
 }
 
-/* ─── Status dot ─── */
-.dot-live {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-}
-.dot-live::before {
-  content: '';
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: #00ff88;
-  box-shadow: 0 0 8px #00ff88;
-  animation: pulse-dot 2s ease-in-out infinite;
-  flex-shrink: 0;
-}
+/*
+ * ─────────────────────────────────────────────────────────── reduced motion ──
+ * A global kill-switch for CSS animation. JS-driven motion (three.js loops,
+ * GSAP timelines, Lenis) is disabled separately in lib/motion.ts — CSS alone
+ * cannot reach it.
+ *
+ * `!important` is deliberate: this must beat every utility class.
+ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
 
-/* ─── Animations ─── */
-@keyframes pulse-dot {
-  0%, 100% { opacity: 1; transform: scale(1); }
-  50%       { opacity: 0.6; transform: scale(1.3); }
-}
-
-@keyframes blink {
-  0%, 100% { opacity: 1; }
-  50%       { opacity: 0; }
-}
-.blink { animation: blink 1s step-end infinite; }
-
-@keyframes float {
-  0%, 100% { transform: translateY(0); }
-  50%       { transform: translateY(-12px); }
-}
-.float { animation: float 5s ease-in-out infinite; }
-.float-slow { animation: float 7s ease-in-out infinite; }
-
-@keyframes scan {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(100vw); }
-}
-
-@keyframes spin-slow {
-  to { transform: rotate(360deg); }
-}
-.spin-slow { animation: spin-slow 12s linear infinite; }
-
-@keyframes gradient-x {
-  0%, 100% { background-position: 0% 50%; }
-  50%       { background-position: 100% 50%; }
-}
-.gradient-shift {
-  background-size: 200% 200%;
-  animation: gradient-x 4s ease infinite;
-}
-
-@keyframes slide-in-right {
-  from { opacity: 0; transform: translateX(40px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-@keyframes slide-in-left {
-  from { opacity: 0; transform: translateX(-40px); }
-  to   { opacity: 1; transform: translateX(0); }
-}
-@keyframes slide-in-up {
-  from { opacity: 0; transform: translateY(30px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes fade-in {
-  from { opacity: 0; }
-  to   { opacity: 1; }
-}
-
-/* ─── Progress bar ─── */
-.progress-bar-fill {
-  background: linear-gradient(90deg, var(--c-cyan), var(--c-green));
-  box-shadow: 0 0 10px rgba(0,212,255,0.5);
-  border-radius: 9999px;
-  height: 100%;
-  transition: width 1s ease;
-}
-
-/* ─── Clip path hexagon (unused but available) ─── */
-.hex {
-  clip-path: polygon(50% 0%, 93% 25%, 93% 75%, 50% 100%, 7% 75%, 7% 25%);
-}
-
-/* ─── Line clamp ─── */
-.line-clamp-2 {
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  .grain::after {
+    display: none;
+  }
 }
