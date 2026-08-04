@@ -18,6 +18,19 @@ export type Experience = {
 
 export const experience: Experience[] = [
   {
+    id: 'freelance',
+    company: 'Independent',
+    role: 'Freelance Cloud Engineer',
+    period: '2024 — Present',
+    location: 'Remote, international',
+    status: 'current',
+    highlights: [
+      'Delivered production-grade AWS infrastructure and backend systems for 15+ international clients.',
+      'Scoped, provisioned and handed over environments end to end — networking, IAM, CI/CD and monitoring included.',
+      'Worked directly with founders and small teams, which meant owning the architecture decision as well as the implementation.',
+    ],
+  },
+  {
     id: 'nogiz',
     company: 'Nogiz',
     role: 'DevOps Engineer',

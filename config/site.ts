@@ -62,13 +62,47 @@ export const site = {
   ],
 
   /**
-   * Headline figures for the hero. `suffix` is rendered outside the count-up so
-   * the animation only ever tweens a real number.
+   * Headline figures for the hero.
+   *
+   * `value` is the number the count-up tweens to and `suffix` is rendered
+   * outside it, so the animation only ever handles a real number. A stat with
+   * no meaningful number (a rank, a ratio) sets `display` instead and skips the
+   * count-up entirely — faking a tween on "Top 1%" would mean animating
+   * through percentages that were never true.
    */
   stats: [
-    { label: 'Years experience', value: 2, suffix: '+' },
-    { label: 'Systems shipped', value: 4, suffix: '' },
-    { label: 'Certifications', value: 2, suffix: '' },
+    { label: 'Hackathons won', value: 29, suffix: '+', of: 'from 40+ entered' },
+    { label: 'Global rank', display: 'Top 1%', of: 'competitive hackathons' },
+    { label: 'Clients shipped for', value: 15, suffix: '+', of: 'international, freelance' },
+    { label: 'Years experience', value: 2, suffix: '+', of: 'DevOps and cloud' },
+  ],
+
+  /**
+   * The two claims that go above everything else on the page.
+   *
+   * These are separated from `stats` because they carry a sentence, not just a
+   * figure — and because they earn the largest type on the site after the name
+   * itself. Order matters: the band renders them in sequence.
+   */
+  highlights: [
+    {
+      id: 'hackathons',
+      figure: '29+',
+      unit: 'wins from 40+ entered',
+      title: 'Hackathon champion',
+      detail:
+        'Won 29 of more than 40 national and international competitions — a Top 1% global rank among competitive hackathon participants.',
+      badge: 'Top 1% globally',
+    },
+    {
+      id: 'freelance',
+      figure: '15+',
+      unit: 'international clients',
+      title: 'Freelance cloud engineer',
+      detail:
+        'Delivered production-grade AWS infrastructure and backend systems for more than 15 international clients, from first provision to handover.',
+      badge: 'Production workloads',
+    },
   ],
 
   /** Short bio — rendered as real text in the hero's scroll-out panel. */
@@ -79,6 +113,7 @@ export const site = {
   ],
 
   credentials: [
+    { title: '29+ hackathon wins from 40+ entered — Top 1% globally', issuer: 'National & international competitions', year: '2023—2026' },
     { title: 'AWS Certified Solutions Architect', issuer: 'Amazon Web Services', year: '2023' },
     { title: 'HashiCorp Terraform Associate', issuer: 'HashiCorp', year: '2023' },
     { title: 'Hackathon Winner — Project Supertech', issuer: 'Maharaja Agrasen College', year: '2025' },

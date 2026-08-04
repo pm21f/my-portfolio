@@ -1,4 +1,5 @@
 import Hero from '@/components/sections/hero'
+import Highlights from '@/components/sections/highlights'
 import Pipeline from '@/components/sections/pipeline'
 import Cluster from '@/components/sections/cluster'
 import Skills from '@/components/sections/skills'
@@ -54,6 +55,7 @@ export default function Home() {
 
       <main id="main" className="relative">
         <Hero />
+        <Highlights />
         <Pipeline />
         <Cluster />
         <Skills />

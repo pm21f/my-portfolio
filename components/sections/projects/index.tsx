@@ -24,7 +24,7 @@ export function Projects() {
     <section id="projects" className="relative px-6 py-32 lg:px-24">
       <div className="mx-auto max-w-5xl">
         <SectionHeader index="05" label="Work">
-          Four systems, and what they <span className="text-accent-gradient">changed</span>.
+          Client work and the systems <span className="text-accent-gradient">behind it</span>.
         </SectionHeader>
 
         <div className="mb-14 mt-6 flex flex-wrap items-center gap-4">

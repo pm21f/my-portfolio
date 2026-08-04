@@ -14,14 +14,14 @@ export function Hero() {
   return (
     <section
       id="hero"
-      className="relative flex min-h-svh flex-col justify-center overflow-hidden px-6 py-32 lg:px-24"
+      className="relative flex min-h-svh flex-col justify-center overflow-hidden px-6 py-24 lg:px-24"
     >
       <div aria-hidden="true" className="grid-overlay absolute inset-0" />
       <HeroCanvas />
 
       <div className="relative mx-auto w-full max-w-6xl" style={{ zIndex: 10 }}>
         {site.availability.open ? (
-          <p className="mb-8 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1.5 font-mono text-label-sm uppercase text-signal-ok">
+          <p className="mb-6 inline-flex items-center gap-2 rounded-full border border-line px-3 py-1.5 font-mono text-label-sm uppercase text-signal-ok">
             <span
               aria-hidden="true"
               className="inline-block h-1.5 w-1.5 animate-pulse-dot rounded-full bg-signal-ok"
@@ -41,22 +41,27 @@ export function Hero() {
           <span className="block text-accent-gradient">{site.nameParts[1]}</span>
         </h1>
 
-        <div className="mb-10 max-w-xl space-y-3">
+        <div className="mb-8 max-w-xl space-y-3">
           <TerminalLine />
           <p className="font-mono text-body-sm text-ink-muted">
             <span className="text-accent">◆</span> {site.location}
           </p>
         </div>
 
-        <p className="mb-12 max-w-lg font-mono text-body-md leading-relaxed text-ink-secondary text-pretty">
+        <p className="mb-10 max-w-lg font-mono text-body-md leading-relaxed text-ink-secondary text-pretty">
           {site.tagline} {site.description}
         </p>
 
-        <div className="mb-14">
-          <Stats />
-        </div>
+        {/*
+          Actions sit ABOVE the figures.
 
-        <div className="flex flex-wrap gap-3">
+          The stats block is a 2×2 grid, and on a ~800px-tall laptop viewport
+          placing it first pushed "Get in touch" below the fold — the one thing
+          on this page a recruiter needs to find. The numbers are supporting
+          evidence and read perfectly well after the ask, and the Highlights
+          band immediately below restates the two strongest at far larger size.
+        */}
+        <div className="mb-10 flex flex-wrap gap-3">
           <a
             href={`mailto:${site.email}`}
             className="rounded-md bg-accent px-5 py-2.5 font-mono text-label-md font-semibold uppercase text-void transition-all duration-fast hover:bg-accent-hot hover:shadow-glow-strong"
@@ -77,6 +82,8 @@ export function Hero() {
               </a>
             ))}
         </div>
+
+        <Stats />
       </div>
     </section>
   )

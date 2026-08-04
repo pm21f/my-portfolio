@@ -26,6 +26,7 @@ export type ProjectSlug =
   | 'ci-cd-pipeline'
   | 'kafka-streaming'
   | 'observability-stack'
+  | 'client-infrastructure'
 
 /** Node roles in the architecture diagram. Drives shape and signal colour. */
 export type ArchNodeKind = 'source' | 'compute' | 'data' | 'observe' | 'edge'
@@ -61,8 +62,60 @@ export type Project = {
 
 export const projects: Project[] = [
   {
-    slug: 'k8s-platform',
+    /*
+     * Client work, deliberately first.
+     *
+     * Delivering infrastructure for 15+ paying international clients is the
+     * strongest single signal on this page — it is production work someone
+     * else depended on, not a personal project. The `problem` and
+     * `architecture` here are necessarily generic because the engagements
+     * differ and clients aren't named, so this entry stays gated by
+     * needsReview: it shows the record and the stack without publishing an
+     * invented account of any one client's system.
+     */
+    slug: 'client-infrastructure',
     index: '01',
+    name: 'Client Cloud Infrastructure — Freelance',
+    kind: 'Consulting Engagements',
+    environment: 'aws / multi-account',
+    status: 'running',
+    summary:
+      'Production-grade AWS infrastructure and backend systems delivered for 15+ international clients — scoped, provisioned, monitored and handed over end to end.',
+    problem:
+      'Most engagements started the same way: a working application with no repeatable path to production. Infrastructure existed as console clicks nobody had written down, so environments drifted and nothing could be rebuilt from scratch.',
+    architecture: {
+      nodes: [
+        { id: 'tf', label: 'Terraform', kind: 'source', column: 0 },
+        { id: 'vpc', label: 'VPC / IAM', kind: 'compute', column: 1 },
+        { id: 'compute', label: 'EC2 / Lambda', kind: 'compute', column: 2 },
+        { id: 'store', label: 'S3 / RDS', kind: 'data', column: 2 },
+        { id: 'ci', label: 'CI/CD', kind: 'compute', column: 3 },
+        { id: 'obs', label: 'CloudWatch', kind: 'observe', column: 3 },
+        { id: 'handover', label: 'Runbook', kind: 'edge', column: 4 },
+      ],
+      edges: [
+        ['tf', 'vpc'],
+        ['vpc', 'compute'],
+        ['vpc', 'store'],
+        ['compute', 'ci'],
+        ['compute', 'obs'],
+        ['ci', 'handover'],
+        ['obs', 'handover'],
+      ],
+      note: 'Every engagement ended with a runbook and Terraform state the client owned. Infrastructure a consultant alone can operate is a liability, not a deliverable.',
+    },
+    outcome: [
+      { label: 'Clients', value: '15+', note: 'international, across time zones' },
+      { label: 'Delivery', value: 'End to end', note: 'scoping through handover' },
+      { label: 'Environments', value: 'Reproducible', note: 'defined in Terraform, not clicks' },
+    ],
+    stack: ['AWS', 'Terraform', 'EC2', 'Lambda', 'S3', 'VPC', 'IAM', 'CloudWatch', 'Docker'],
+    links: {},
+    needsReview: true,
+  },
+  {
+    slug: 'k8s-platform',
+    index: '02',
     name: 'Kubernetes Multi-Environment Platform',
     kind: 'Container Orchestration',
     environment: 'aws / eks',
@@ -106,7 +159,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'ci-cd-pipeline',
-    index: '02',
+    index: '03',
     name: 'Jenkins → Argo CD Delivery Pipeline',
     kind: 'Continuous Delivery',
     environment: 'self-hosted',
@@ -144,7 +197,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'kafka-streaming',
-    index: '03',
+    index: '04',
     name: 'Kafka Event Streaming Infrastructure',
     kind: 'Message Broker',
     environment: 'ap-south-1',
@@ -184,7 +237,7 @@ export const projects: Project[] = [
   },
   {
     slug: 'observability-stack',
-    index: '04',
+    index: '05',
     name: 'Infrastructure Observability Stack',
     kind: 'Observability Platform',
     environment: 'multi-region',

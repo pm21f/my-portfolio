@@ -32,17 +32,17 @@ export const categories: Record<SkillCategory, { label: string; index: string }>
 
 export const skills: Skill[] = [
   /* ── cloud ── */
-  { id: 'aws', label: 'AWS', category: 'cloud', projects: ['k8s-platform', 'observability-stack'] },
+  { id: 'aws', label: 'AWS', category: 'cloud', projects: ['client-infrastructure', 'k8s-platform', 'observability-stack'] },
   { id: 'eks', label: 'EKS', category: 'cloud', projects: ['k8s-platform', 'ci-cd-pipeline'] },
-  { id: 'ec2', label: 'EC2', category: 'cloud', projects: ['observability-stack'] },
-  { id: 'lambda', label: 'Lambda', category: 'cloud', projects: [] },
-  { id: 's3', label: 'S3', category: 'cloud', projects: ['observability-stack'] },
-  { id: 'vpc', label: 'VPC', category: 'cloud', projects: ['k8s-platform'] },
-  { id: 'iam', label: 'IAM', category: 'cloud', projects: ['k8s-platform'] },
-  { id: 'cloudwatch', label: 'CloudWatch', category: 'cloud', projects: ['observability-stack'] },
+  { id: 'ec2', label: 'EC2', category: 'cloud', projects: ['client-infrastructure', 'observability-stack'] },
+  { id: 'lambda', label: 'Lambda', category: 'cloud', projects: ['client-infrastructure'] },
+  { id: 's3', label: 'S3', category: 'cloud', projects: ['client-infrastructure', 'observability-stack'] },
+  { id: 'vpc', label: 'VPC', category: 'cloud', projects: ['client-infrastructure', 'k8s-platform'] },
+  { id: 'iam', label: 'IAM', category: 'cloud', projects: ['client-infrastructure', 'k8s-platform'] },
+  { id: 'cloudwatch', label: 'CloudWatch', category: 'cloud', projects: ['client-infrastructure', 'observability-stack'] },
 
   /* ── containers ── */
-  { id: 'docker', label: 'Docker', category: 'containers', projects: ['ci-cd-pipeline', 'k8s-platform'] },
+  { id: 'docker', label: 'Docker', category: 'containers', projects: ['client-infrastructure', 'ci-cd-pipeline', 'k8s-platform'] },
   { id: 'kubernetes', label: 'Kubernetes', category: 'containers', projects: ['k8s-platform', 'kafka-streaming', 'ci-cd-pipeline'] },
   { id: 'helm', label: 'Helm', category: 'containers', projects: ['k8s-platform', 'observability-stack'] },
   { id: 'ingress', label: 'Ingress-NGINX', category: 'containers', projects: ['k8s-platform'] },
@@ -52,7 +52,7 @@ export const skills: Skill[] = [
   /* ── ci/cd + iac ── */
   { id: 'jenkins', label: 'Jenkins', category: 'cicd', projects: ['ci-cd-pipeline'] },
   { id: 'actions', label: 'GitHub Actions', category: 'cicd', projects: ['ci-cd-pipeline'] },
-  { id: 'terraform', label: 'Terraform', category: 'cicd', projects: ['k8s-platform', 'kafka-streaming'] },
+  { id: 'terraform', label: 'Terraform', category: 'cicd', projects: ['client-infrastructure', 'k8s-platform', 'kafka-streaming'] },
   { id: 'ansible', label: 'Ansible', category: 'cicd', projects: [] },
   { id: 'argocd', label: 'Argo CD', category: 'cicd', projects: ['ci-cd-pipeline'] },
   { id: 'sonarqube', label: 'SonarQube', category: 'cicd', projects: ['ci-cd-pipeline'] },
