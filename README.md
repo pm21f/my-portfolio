@@ -97,9 +97,27 @@ metric or job title.
    That list is what the skills sphere filters by. A skill with an empty
    `projects` array still renders but isn't clickable — don't pad it.
 
-4. **Your résumé** → drop a PDF at `public/resume.pdf`. The terminal's
-   `resume --download` and the contact link both point at `site.resume`.
-   **This file is not in the repo yet — add it, or both links 404.**
+4. **Your résumé** → `site.resume` holds two URLs derived from one Google Doc:
+
+   ```ts
+   resume: {
+     view:     'https://docs.google.com/document/d/<ID>/preview',
+     download: 'https://docs.google.com/document/d/<ID>/export?format=pdf',
+   }
+   ```
+
+   Swapping in a different document means changing `<ID>` only. Use `/preview`
+   rather than the `/edit` link a share dialog gives you — `/edit` drops
+   visitors into the Docs editor UI, and anyone with edit access could change
+   the document from it.
+
+   The doc must be shared **"anyone with the link can view"**, or both links
+   break for everyone except you. Worth re-checking after any Drive
+   permissions change.
+
+   To self-host instead, put a PDF in `public/` and point both fields at
+   `/resume.pdf`; the terminal detects the same-origin path and uses a real
+   `download` attribute.
 
 5. **Draft flags gate publication.** While a project has `needsReview: true`,
    its card renders only your own material — summary, stack, outcome metrics —
@@ -237,7 +255,8 @@ still works.
 
 ## Known gaps
 
-- `public/resume.pdf` is missing — add it.
-- Project `problem` and `architecture` prose is drafted, not authored; anything
-  still flagged `needsReview: true` needs your review.
+- Project `problem` and `architecture` prose is drafted, not authored. While
+  `needsReview: true` is set, that prose is **not published** — the card shows
+  only the summary, stack and outcome metrics, and the case study does not
+  render. Rewrite the two fields and delete the flag to publish it.
 - `components/ui/*` is unused shadcn scaffolding, safe to delete wholesale.

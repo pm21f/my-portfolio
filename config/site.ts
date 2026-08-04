@@ -21,10 +21,25 @@ export const site = {
   email: 'piyushmodgil9@gmail.com',
 
   /**
-   * Drop the PDF at public/resume.pdf. The contact terminal's
-   * `resume --download` command reads this path.
+   * The résumé lives in Google Docs, which gives two useful URLs from one
+   * document — no PDF to re-export and re-commit every time it changes.
+   *
+   *   view      /preview renders read-only with none of the Docs editing
+   *             chrome. Do NOT use the /edit link a share dialog hands you:
+   *             it drops visitors into the editor UI, and anyone with edit
+   *             access could change the document from it.
+   *   download  /export?format=pdf streams a real PDF with a
+   *             Content-Disposition attachment header, so the browser saves
+   *             it rather than displaying it.
+   *
+   * Both require the document to be shared as "anyone with the link can
+   * view". If you tighten that, both links break for everyone but you.
    */
-  resume: '/resume.pdf',
+  resume: {
+    view: 'https://docs.google.com/document/d/1WGaHmfKs5PXxZ-DSE_0JyLUxQ6SiR3E2yEIByBmL38s/preview',
+    download:
+      'https://docs.google.com/document/d/1WGaHmfKs5PXxZ-DSE_0JyLUxQ6SiR3E2yEIByBmL38s/export?format=pdf',
+  },
 
   tagline: 'I build infrastructure that stays up.',
 

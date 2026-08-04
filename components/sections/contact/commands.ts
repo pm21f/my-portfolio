@@ -88,8 +88,11 @@ export const commands: Command[] = [
     usage: 'resume --download',
     summary: 'Download my CV as a PDF',
     run: () => ({
-      lines: [ok(`fetching ${site.resume}`)],
-      action: { type: 'download', href: site.resume },
+      lines: [
+        ok('fetching résumé.pdf'),
+        muted(`  or read it in the browser: ${site.resume.view}`),
+      ],
+      action: { type: 'download', href: site.resume.download },
     }),
   },
   {

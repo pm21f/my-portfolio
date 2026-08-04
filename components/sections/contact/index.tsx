@@ -48,18 +48,35 @@ export function Contact() {
                   </a>
                 </li>
               ))}
-              <li>
-                <a
-                  href={site.resume}
-                  className="group flex items-baseline justify-between gap-4 border-b border-line-subtle pb-3 transition-colors duration-fast hover:border-accent"
-                >
-                  <span className="font-mono text-label-sm uppercase text-ink-muted">
-                    Résumé
+              {/*
+                Two links, because "résumé" means different things to different
+                people: a recruiter skimming on a phone wants to read it now,
+                and a hiring manager filing it wants the PDF. Forcing a download
+                on the first is a good way to lose them.
+              */}
+              <li className="flex items-baseline justify-between gap-4 border-b border-line-subtle pb-3">
+                <span className="font-mono text-label-sm uppercase text-ink-muted">Résumé</span>
+                <span className="flex items-baseline gap-3 font-mono text-body-sm">
+                  <a
+                    href={site.resume.view}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-ink-secondary transition-colors duration-fast hover:text-accent"
+                  >
+                    read
+                  </a>
+                  <span aria-hidden="true" className="text-ink-faint">
+                    /
                   </span>
-                  <span className="font-mono text-body-sm text-ink-secondary transition-colors duration-fast group-hover:text-accent">
+                  <a
+                    href={site.resume.download}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-ink-secondary transition-colors duration-fast hover:text-accent"
+                  >
                     download PDF
-                  </span>
-                </a>
+                  </a>
+                </span>
               </li>
             </ul>
 

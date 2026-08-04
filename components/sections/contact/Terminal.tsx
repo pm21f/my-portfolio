@@ -185,16 +185,32 @@ export function Terminal() {
         case 'clear':
           setLines([])
           break
-        case 'open':
-          window.location.href = result.action.href
+        case 'open': {
+          const { href } = result.action
+          // mailto: must stay in this tab — window.open would leave a blank
+          // one behind after the mail client takes over.
+          if (href.startsWith('mailto:')) window.location.href = href
+          else window.open(href, '_blank', 'noopener,noreferrer')
           break
+        }
         case 'download': {
-          // Not fetched first: if the PDF is missing the browser surfaces its
-          // own 404, which is a clearer signal than a fake success line here.
+          const { href } = result.action
           const anchor = document.createElement('a')
-          anchor.href = result.action.href
-          anchor.download = ''
+          anchor.href = href
           anchor.rel = 'noopener'
+
+          /*
+           * The `download` attribute is IGNORED for cross-origin URLs — the
+           * browser silently navigates instead of saving. The résumé is a
+           * Google Docs export, so it relies on that response's
+           * Content-Disposition: attachment header to trigger the save, and
+           * opens in a new tab so a header change can never navigate the
+           * visitor away from the site.
+           */
+          const sameOrigin = href.startsWith('/') || href.startsWith(window.location.origin)
+          if (sameOrigin) anchor.download = ''
+          else anchor.target = '_blank'
+
           document.body.appendChild(anchor)
           anchor.click()
           anchor.remove()
